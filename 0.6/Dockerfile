@@ -2,9 +2,7 @@ FROM python:2
 
 MAINTAINER WireCloud Team <wirecloud@conwet.com>
 
-RUN pip install "wirecloud<0.8.0" "gunicorn==19.3.0" "psycopg2==2.6"
-
-VOLUME /var/www/static
+RUN pip install "wirecloud<0.7.0" "gunicorn==19.3.0" "psycopg2==2.6"
 
 WORKDIR /opt
 
