@@ -1,17 +1,18 @@
-WireCloud is part of [FIWARE](http://www.fiware.org/).
-
-See the Dockerfiles [here](https://github.com/Wirecloud/docker-wirecloud).
-
-## Requisites
-
-You need to have a running instance of PostgreSQL, you can do it manually or follow the steps bellow to setup all with `docker-compose`.
-
 ## Supported tags and respective `Dockerfile` links
 
 - [`0.7`, `latest`](https://github.com/Wirecloud/docker-wirecloud/blob/master/0.7/Dockerfile)
 - [`0.6`](https://github.com/Wirecloud/docker-wirecloud/blob/master/0.6/Dockerfile)
 
-## Running with Docker Compose and Docker machine
+
+## What is WireCloud?
+
+Wirecloud builds on cutting-edge end-user development, RIA and semantic technologies to offer a next-generation end-user centred web application mashup platform aimed at leveraging the long tail of the Internet of Services. Wirecloud builds on cutting-edge end-user (software) development, RIA and semantic technologies to offer a next-generation end-user centred web application mashup platform aimed at allowing end users without programming skills to easily create web applications and dashboards/cockpits (e.g. to visualize their data of interest or to control their domotized home or environment). Web application mashups integrate heterogeneous data, application logic, and UI components (widgets) sourced from the Web to create new coherent and value-adding composite applications. They are targeted at leveraging the "long tail" of the Web of Services (a.k.a. the Programmable Web) by exploiting rapid development, DIY, and shareability. They typically serve a specific situational (i.e. immediate, short-lived, customized) need, frequently with high potential for reuse. Is this "situational" character which precludes them to be offered as 'off-the-shelf' functionality by solution providers, and therefore creates the need for a tool like Wirecloud
+
+WireCloud is part of [FIWARE](http://www.fiware.org/). Check it out in the [Catalogue](http://catalogue.fiware.org/enablers/application-mashup-wirecloud)
+
+## How to use this image.
+
+This image is currently meant to be used with `docker-compose` and `docker-machine`. In the future this image will be usable indepently.
 
 [Docker compose](https://docs.docker.com/compose/) is a tool that allows you to defining and running multi-container applications with Docker.
 [Docker machine](https://docs.docker.com/machine/) is another tool that provides the ability to create Docker hosts in a computer, cloup provider or data center.
@@ -29,6 +30,7 @@ docker-compose version: 1.3.1
 ```
 
 Once you have all installed, you need a docker-compose.yml to define the containers, the base file that you can use is [this](https://github.com/Wirecloud/docker-wirecloud/blob/master/hub-docks/compose-files/docker-compose.yml):
+
 ```
 nginx:
     restart: always
@@ -72,6 +74,7 @@ wirecloud:
 This docker-compose file uses a custom nginx container that allow us to redirect the ports without configure anything, you can download it from [here](https://github.com/Wirecloud/docker-wirecloud/blob/master/hub-docks/compose-files/nginx) and place the directory `nginx` in the same level than `docker-compose.yml`.
 
 Before starting you need to create a docker machine, you can do it with this command:
+
 ```
 $ docker-machine create -d virtualbox dev;
 ```
@@ -134,23 +137,32 @@ Go to your browser and open that IP, you will see the WireCloud instance.
 Some useful command for docker compose are the following:
 
 - See the containers and the state
-```
-$ docker-compose ps
-              Name                            Command               State           Ports
---------------------------------------------------------------------------------------------------
-dockerwirecloud1_data_1            /docker-entrypoint.sh true       Up      5432/tcp
-dockerwirecloud1_nginx_1           /usr/sbin/nginx                  Up      0.0.0.0:80->80/tcp
-dockerwirecloud1_postgres_1        /docker-entrypoint.sh postgres   Up      0.0.0.0:5432->5432/tcp
-dockerwirecloud1_wirecloud_1       /usr/local/bin/gunicorn wi ...   Up      8000/tcp
-dockerwirecloud1_wirecloud_run_1   python manage.py syncdb -- ...   Up      8000/tcp
-```
 
-- See the logs
-```
-$ docker-compose logs
-```
+        $ docker-compose ps
+                      Name                            Command               State           Ports
+        --------------------------------------------------------------------------------------------------
+        dockerwirecloud1_data_1            /docker-entrypoint.sh true       Up      5432/tcp
+        dockerwirecloud1_nginx_1           /usr/sbin/nginx                  Up      0.0.0.0:80->80/tcp
+        dockerwirecloud1_postgres_1        /docker-entrypoint.sh postgres   Up      0.0.0.0:5432->5432/tcp
+        dockerwirecloud1_wirecloud_1       /usr/local/bin/gunicorn wi ...   Up      8000/tcp
+        dockerwirecloud1_wirecloud_run_1   python manage.py syncdb -- ...   Up      8000/tcp
 
-- Connect to the docker PostgreSQL (replace the IP with yours)
-```
-$ psql -h 192.168.99.100 -p 5432 -U postgres --password
-```
+- See the logs:
+
+        $ docker-compose logs
+
+
+- Connect to the docker PostgreSQL (replace the IP with yours):
+
+        $ psql -h 192.168.99.100 -p 5432 -U postgres --password
+
+
+## License
+
+View license information for [WireCloud](https://github.com/Wirecloud/wirecloud/blob/develop/LICENSE.txt).
+
+## Supported Docker versions
+
+This image is officially supported on Docker version 1.7.0.
+
+Support for older versions (down to 1.0) is provided on a best-effort basis.
