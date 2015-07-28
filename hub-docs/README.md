@@ -18,7 +18,7 @@ This image is currently meant to be used with `docker-compose` and `docker-machi
 [Docker machine](https://docs.docker.com/machine/) is another tool that provides the ability to create Docker hosts in a computer, cloup provider or data center.
 
 First, install docker compose following [this steps](https://docs.docker.com/compose/install/). Do not install from pip, there are some problems in the pip version with the terminal forwarding.
-Then, install docker compose following [this steps](https://docs.docker.com/machine/).
+Then, install docker machine following [this steps](https://docs.docker.com/machine/).
 
 Check that you have installed with:
 
