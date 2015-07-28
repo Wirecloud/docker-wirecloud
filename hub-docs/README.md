@@ -29,7 +29,7 @@ $ docker-compose --version
 docker-compose version: 1.3.1
 ```
 
-Once you have all installed, you need a docker-compose.yml to define the containers, the base file that you can use is [this](https://github.com/Wirecloud/docker-wirecloud/blob/master/hub-docks/compose-files/docker-compose.yml):
+Once you have all installed, you need a docker-compose.yml to define the containers, the base file that you can use is [this](https://github.com/Wirecloud/docker-wirecloud/blob/master/hub-docs/compose-files/docker-compose.yml):
 
 ```
 nginx:
