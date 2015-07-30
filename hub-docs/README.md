@@ -71,7 +71,7 @@ wirecloud:
     command: /usr/local/bin/gunicorn wirecloud_instance.wsgi:application -w 2 -b :8000
 ```
 
-This docker-compose file uses a custom nginx container that allow us to redirect the ports without configure anything, you can download it from [here](https://github.com/Wirecloud/docker-wirecloud/blob/master/hub-docks/compose-files/nginx) and place the directory `nginx` in the same level than `docker-compose.yml`.
+This docker-compose file uses a custom nginx container that allow us to redirect the ports without configure anything, you can download it from [here](https://github.com/Wirecloud/docker-wirecloud/tree/master/hub-docs/compose-files/nginx) and place the directory `nginx` in the same level than `docker-compose.yml`, make sure that the `nginx` directory is exactly like the one in the repository or it won't work.
 
 Before starting you need to create a docker machine, you can do it with this command:
 
