@@ -1,4 +1,4 @@
-## Supported tags and respective `Dockerfile` links
+# Supported tags and respective `Dockerfile` links #
 
 - [`0.7`, `latest`](https://github.com/Wirecloud/docker-wirecloud/blob/master/0.7/Dockerfile)
 - [`0.6`](https://github.com/Wirecloud/docker-wirecloud/blob/master/0.6/Dockerfile)
@@ -10,14 +10,60 @@ Wirecloud builds on cutting-edge end-user development, RIA and semantic technolo
 
 WireCloud is part of [FIWARE](http://www.fiware.org/). Check it out in the [Catalogue](http://catalogue.fiware.org/enablers/application-mashup-wirecloud)
 
-## How to use this image.
+## How to use this images.
 
-This image is currently meant to be used with `docker-compose` and `docker-machine`. In the future this image will be usable indepently.
+There are two types of images, the "standalone" (`0.6`, `0.7` and `latest`) images and the "composable" (`0.6-composable`, `0.7-composable` and `latest-composable`) images.
+
+The standalone images comes with everything ready to run `wirecloud` just with the image.
+
+The composable images are designed to work with `docker-compose` and `docker-machine`.
+
+To know how to get and run the standalone images go to the [Standalone Section](#Standalone).
+
+To know how to get and run the composable images go to the [Composable Section](#Composable).
+
+## Standalone
+
+Running the standalone images are really simple. In the examples we are going to use the `latest` version but should work with `0.6` and `0.7` too.
+
+First, we need to get and run the image:
+
+```
+docker run -d -p 80:80 --name wirecloud wirecloud/fiware-wirecloud:latest
+```
+
+Let's explain the command:
+- `docker`: The main docker binary.
+- `run`: To run the image.
+- `-d`: Detach the image.
+- `-p 80:80`: Assing the local port 80 to the image port 80. If you want to assign other port, for example, the port 8080, this would be: `-p 8080:80`
+- `--name wirecloud`: Give a static name to the image running, this will be useful later when we want to stop and start again the instance without loosing data. The name can be whatever you want.
+- `wirecloud/fiware-wirecloud:latest`: The name of the image.
+
+Now you can go to the browser and see `wirecloud` in the browser. If you used the port 80, just go to [http://localhost](http://localhost).
+
+If you want to stop/restart/start the instance, just execute:
+
+```
+# Stop the instance
+docker stop wirecloud
+# Start the instance
+docker start wirecloud
+# Restart the insance
+docker restart wirecloud
+```
+
+In that way, you won't loose any data.
+
+## Composable
+
+This image need to be used with `docker-compose` and `docker-machine`.
 
 [Docker compose](https://docs.docker.com/compose/) is a tool that allows you to defining and running multi-container applications with Docker.
 [Docker machine](https://docs.docker.com/machine/) is another tool that provides the ability to create Docker hosts in a computer, cloup provider or data center.
 
 First, install docker compose following [this steps](https://docs.docker.com/compose/install/). Do not install from pip, there are some problems in the pip version with the terminal forwarding.
+
 Then, install docker machine following [this steps](https://docs.docker.com/machine/).
 
 Check that you have installed with:
@@ -61,9 +107,7 @@ data:
 
 wirecloud:
     restart: always
-    image: wirecloud/fiware-wirecloud:latest
-    expose:
-        - "8000"
+    image: wirecloud/fiware-wirecloud:latest-composable
     links:
         - postgres:postgres
     volumes:

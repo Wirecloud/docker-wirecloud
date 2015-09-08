@@ -27,9 +27,7 @@ data:
 
 wirecloud:
     restart: always
-    image: wirecloud/fiware-wirecloud:latest
-    expose:
-        - "8000"
+    image: wirecloud/fiware-wirecloud:latest-composable
     links:
         - postgres:postgres
     volumes:
