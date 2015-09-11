@@ -1,15 +1,19 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 from __future__ import print_function
 import os
 import sys
 import time
 from os.path import join
-from subprocess import Popen
+from subprocess import Popen, PIPE
 from shutil import copy2
 
 # DATA
 PY2 = sys.version_info < (3, 0)
 input = raw_input if PY2 else input
+
+VERBOSE=False
+if len(sys.argv) > 1 and sys.argv[1] in ['-v', '--verbose']:
+    VERBOSE=True
 
 BASEDIR = '.'
 BASE = "wirecloud/fiware-wirecloud:{tag}"
@@ -54,22 +58,27 @@ print("\033[92mCopying static files:\033[95m", ", ".join(ALLSTATICFILES), "\033[
 copied = [copy_files(tag) for tag in directories]
 
 # Change the color of the output :)
-print("\033[94m")
+print("\033[92mBuilding all\n\033[94m")
 
 # Let's build them in parallel
-popen_tag = lambda tag, src: Popen(['docker', 'build', '-t', BASE.format(tag=tag), join(BASEDIR, src)])
+popen_tag = lambda tag, src: Popen(['docker', 'build', '-t', BASE.format(tag=tag), join(BASEDIR, src)], stdout=PIPE)
+if VERBOSE:
+    popen_tag = lambda tag, src: Popen(['docker', 'build', '-t', BASE.format(tag=tag), join(BASEDIR, src)])
 
+# popen_tag = lambda tag, src: Popen("docker build -t {} {} > /dev/null".format(BASE.format(tag=tag), join(BASEDIR, src)), shell=True)
 
 processes = [popen_tag(tag, tag) for tag in directories]
 processes.extend([popen_tag(tag, d) for d, tag in aliases])
 
 # Wait "asynchronously" and get the pids
 while any(proc.poll() is None for proc in processes):
+    if not VERBOSE:
+        print(".", end='', flush=True, file=sys.stdout)
     time.sleep(0.2)
 pids = [x.returncode for x in processes]
 
 # Reset the color
-print("\033[0m")
+print("\n\033[0m")
 
 removed = [remove_files(tag) for tag in directories]
 
