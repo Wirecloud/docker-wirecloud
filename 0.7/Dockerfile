@@ -3,19 +3,15 @@ FROM python:2
 MAINTAINER WireCloud Team <wirecloud@conwet.com>
 
 # Install wirecloud & dependencies
-RUN pip install "wirecloud<0.8.0" "gunicorn==19.3.0" "psycopg2==2.6"
+RUN pip install "wirecloud<0.8.0" "gunicorn==19.3.0"
 # RUN pip install "wirecloud<0.8.0"
 
 RUN apt-get -y update
 RUN apt-get install -y apache2 libapache2-mod-wsgi vim
 
-RUN a2enmod wsgi
-
 COPY ["apache-config.conf", "/etc/apache2/sites-enabled/000-default.conf"]
 
 RUN adduser --system --group --shell /bin/bash wirecloud
-
-RUN /usr/sbin/apache2ctl graceful
 
 WORKDIR /opt
 
@@ -23,7 +19,7 @@ RUN wirecloud-admin startproject wirecloud_instance --quick-start
 
 RUN chown -R wirecloud:wirecloud wirecloud_instance
 
-# The volumes must be done after the wirecloud-admin
+# The volume must be created after running the wirecloud-admin command
 VOLUME /opt/wirecloud_instance
 
 WORKDIR /opt/wirecloud_instance
