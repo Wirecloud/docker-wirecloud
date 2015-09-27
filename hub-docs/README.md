@@ -18,7 +18,7 @@ There are two types of images, the "standalone" (`0.6`, `0.7` and `latest`) imag
 
 The standalone images comes with everything ready to run `wirecloud` just with the image.
 
-The composable images are designed to work with `docker-compose` and `docker-machine`.
+The composable images are designed to work with `docker-compose`.
 
 To know how to get and run the standalone images go to the [Standalone Section](#Standalone).
 
@@ -59,30 +59,20 @@ In that way, you won't loose any data.
 
 ## Composable
 
-This image need to be used with `docker-compose` and `docker-machine`.
+This image is meant to be used with `docker-compose`.
 
 [Docker compose](https://docs.docker.com/compose/) is a tool that allows you to defining and running multi-container applications with Docker.
-[Docker machine](https://docs.docker.com/machine/) is another tool that provides the ability to create Docker hosts in a computer, cloup provider or data center.
 
-First, install docker compose following [this steps](https://docs.docker.com/compose/install/). Do not install from pip, there are some problems in the pip version with the terminal forwarding.
+First, install docker compose following [this steps](https://docs.docker.com/compose/install/)
 
-Then, install docker machine following [this steps](https://docs.docker.com/machine/).
+> Take into account that some users have reporeted errors when instaing docker-compose from pip.
 
-Check that you have installed with:
+You can use [this example `docker-compose.yml` file](https://github.com/Wirecloud/docker-wirecloud/blob/master/hub-docs/compose-files/docker-compose.yml) as base for deploying your WireCloud infrastructure:
 
-```
-$ docker-machine --version
-docker-machine version 0.3.0 (0a251fe)
-$ docker-compose --version
-docker-compose version: 1.3.1
-```
-
-Once you have all installed, you need a docker-compose.yml to define the containers, the base file that you can use is [this](https://github.com/Wirecloud/docker-wirecloud/blob/master/hub-docs/compose-files/docker-compose.yml):
-
-```
+```yaml
 nginx:
     restart: always
-    build: ./nginx/
+    image: wirecloud/django-nginx-composable:latest
     ports:
         - "80:80"
     volumes:
@@ -105,7 +95,7 @@ data:
     image: postgres:latest
     volumes:
         - /var/lib/postgresql
-    command: true
+    command: /bin/true
 
 wirecloud:
     restart: always
@@ -117,35 +107,8 @@ wirecloud:
     command: /usr/local/bin/gunicorn wirecloud_instance.wsgi:application -w 2 -b :8000
 ```
 
-This docker-compose file uses a custom nginx container that allow us to redirect the ports without configure anything, you can download it from [here](https://github.com/Wirecloud/docker-wirecloud/tree/master/hub-docs/compose-files/nginx) and place the directory `nginx` in the same level than `docker-compose.yml`, make sure that the `nginx` directory is exactly like the one in the repository or it won't work.
-
-Before starting you need to create a docker machine, you can do it with this command:
-
-```
-$ docker-machine create -d virtualbox dev;
-```
-
-This will create a "Machine" called `dev` using virtualbox. Now point Docker to this Machine:
-
-```
-$ eval "$(docker-machine env dev)"
-```
-
-You can see that the Machine is running:
-
-```
-$ docker-machine ls
-NAME   ACTIVE   DRIVER       STATE     URL                         SWARM
-dev             virtualbox   Running   tcp://192.168.99.100:2376
-```
-
-Now, you need to build the docker containers (will build nginx container), type in your terminal:
-
-```
-$ docker-compose build
-```
-
-And now, start the service!
+Once created the `docker-compose.yml` file, run the following command from the
+same folder for starting all the containers:
 
 ```
 $ docker-compose up -d
@@ -153,7 +116,7 @@ $ docker-compose up -d
 
 The `-d` flag start the services daemonized.
 
-Now you have to initialize the database (PostgreSQL), to do that run this command and answer the questions to create the new super user (this step will fail if you installed `docker-compose` from pip):
+Now you have to initialize the database (PostgreSQL), to do that run this command and answer the questions to create the new super user (this step may fail if you installed `docker-compose` using pip):
 
 ```
 $ docker-compose run wirecloud python manage.py syncdb --migrate
@@ -168,19 +131,9 @@ Superuser created successfully.
 [...]
 ```
 
-You have installed and running WireCloud!
+Now your WireCloud instance is ready to be used! Open your browser and point it into port 80 of your docker machine.
 
-Now you can access it with the docker-machine ip:
-
-```
-$ docker-machine ip dev
-192.168.99.100
-```
-
-Go to your browser and open that IP, you will see the WireCloud instance.
-
-
-Some useful command for docker compose are the following:
+### Other useful commands
 
 - See the containers and the state
 
