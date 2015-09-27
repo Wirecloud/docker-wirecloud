@@ -16,8 +16,8 @@ RUN adduser --system --group --shell /bin/bash wirecloud
 WORKDIR /opt
 
 RUN wirecloud-admin startproject wirecloud_instance --quick-start
-
 RUN chown -R wirecloud:wirecloud wirecloud_instance
+RUN sed -i "s/SECRET_KEY = '[^']\+'/SECRET_KEY = 'TOCHANGE_SECRET_KEY'/g" wirecloud_instance/settings.py
 
 # The volume must be created after running the wirecloud-admin command
 VOLUME /opt/wirecloud_instance
@@ -26,5 +26,5 @@ WORKDIR /opt/wirecloud_instance
 
 EXPOSE 80
 
-COPY ./entrypoint.sh /
-ENTRYPOINT ["/entrypoint.sh"]
+COPY ./docker-entrypoint.sh /
+ENTRYPOINT ["/docker-entrypoint.sh"]
