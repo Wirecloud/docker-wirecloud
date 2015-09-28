@@ -25,6 +25,6 @@ data:
 
 wirecloud:
     restart: always
-    image: wirecloud/fiware-wirecloud:latest-composable
+    image: fiware/wirecloud:latest-composable
     links:
         - postgres:postgres

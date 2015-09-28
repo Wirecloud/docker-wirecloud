@@ -67,7 +67,7 @@ First, install docker compose following [this steps](https://docs.docker.com/com
 
 > Take into account that some users have reporeted errors when instaing docker-compose from pip.
 
-You can use [this example `docker-compose.yml` file](https://github.com/Wirecloud/docker-wirecloud/blob/master/hub-docs/compose-files/docker-compose.yml) as base for deploying your WireCloud infrastructure:
+You can use [this example `docker-compose.yml` file](https://github.com/Wirecloud/docker-wirecloud/blob/master/hub-docs/docker-compose.yml) as base for deploying your WireCloud infrastructure:
 
 ```yaml
 nginx:
@@ -75,8 +75,6 @@ nginx:
     image: wirecloud/django-nginx-composable:latest
     ports:
         - "80:80"
-    volumes:
-        - /www/static
     volumes_from:
         - wirecloud
     links:
@@ -99,12 +97,9 @@ data:
 
 wirecloud:
     restart: always
-    image: wirecloud/fiware-wirecloud:latest-composable
+    image: fiware/wirecloud:latest-composable
     links:
         - postgres:postgres
-    volumes:
-        - /var/www/static
-    command: /usr/local/bin/gunicorn wirecloud_instance.wsgi:application -w 2 -b :8000
 ```
 
 Once created the `docker-compose.yml` file, run the following command from the
@@ -119,7 +114,7 @@ The `-d` flag start the services daemonized.
 Now you have to initialize the database (PostgreSQL), to do that run this command and answer the questions to create the new super user (this step may fail if you installed `docker-compose` using pip):
 
 ```
-$ docker-compose run wirecloud python manage.py syncdb --migrate
+$ docker-compose run --rm wirecloud initdb
 [...]
 You just installed Django's auth system, which means you don't have any superusers defined.
 Would you like to create one now? (yes/no): yes
@@ -131,7 +126,7 @@ Superuser created successfully.
 [...]
 ```
 
-Now your WireCloud instance is ready to be used! Open your browser and point it into port 80 of your docker machine.
+Now your WireCloud instance is ready to be used! Open your browser and point it to your docker machine using `http://` (e.g. `http://192.168.99.100`).
 
 ### Other useful commands
 
@@ -144,7 +139,6 @@ Now your WireCloud instance is ready to be used! Open your browser and point it 
         dockerwirecloud1_nginx_1           /usr/sbin/nginx                  Up      0.0.0.0:80->80/tcp
         dockerwirecloud1_postgres_1        /docker-entrypoint.sh postgres   Up      0.0.0.0:5432->5432/tcp
         dockerwirecloud1_wirecloud_1       /usr/local/bin/gunicorn wi ...   Up      8000/tcp
-        dockerwirecloud1_wirecloud_run_1   python manage.py syncdb -- ...   Up      8000/tcp
 
 - See the logs:
 
