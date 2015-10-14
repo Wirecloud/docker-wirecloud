@@ -1,8 +1,10 @@
 # Supported tags and respective `Dockerfile` links #
 
-- [`0.7`, `latest`](https://github.com/Wirecloud/docker-wirecloud/blob/master/0.7/Dockerfile)
+- [`0.8`, `latest`](https://github.com/Wirecloud/docker-wirecloud/blob/master/0.8/Dockerfile)
+- [`0.7`](https://github.com/Wirecloud/docker-wirecloud/blob/master/0.7/Dockerfile)
 - [`0.6`](https://github.com/Wirecloud/docker-wirecloud/blob/master/0.6/Dockerfile)
-- [`0.7-composable`, `latest-composable`](https://github.com/Wirecloud/docker-wirecloud/blob/master/0.7-composable/Dockerfile)
+- [`0.8-composable`, `latest-composable`](https://github.com/Wirecloud/docker-wirecloud/blob/master/0.8-composable/Dockerfile)
+- [`0.7-composable`](https://github.com/Wirecloud/docker-wirecloud/blob/master/0.7-composable/Dockerfile)
 - [`0.6-composable`](https://github.com/Wirecloud/docker-wirecloud/blob/master/0.6-composable/Dockerfile)
 
 
