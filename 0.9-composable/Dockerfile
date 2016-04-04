@@ -2,7 +2,7 @@ FROM python:2
 
 MAINTAINER WireCloud Team <wirecloud@conwet.com>
 
-RUN pip install "wirecloud<0.7.0" "gunicorn==19.3.0" "psycopg2==2.6"
+RUN pip install "wirecloud<0.10.0" "gunicorn==19.3.0" "psycopg2==2.6"
 
 WORKDIR /opt
 
@@ -21,7 +21,6 @@ RUN sed -i "s/SECRET_KEY = '[^']\+'/SECRET_KEY = 'TOCHANGE_SECRET_KEY'/g" wirecl
 
 RUN sed -i "s/STATIC_ROOT = path.join(BASEDIR, '..\/static')/STATIC_ROOT = '\/var\/www\/static'/g" wirecloud_instance/settings.py
 
-# RUN python manage.py syncdb --migrate
 RUN python manage.py collectstatic --noinput
 RUN python manage.py compress --force
 
