@@ -4,7 +4,7 @@ sed -i "s/SECRET_KEY = 'TOCHANGE_SECRET_KEY'/SECRET_KEY = '$(python -c "from dja
 
 case "$1" in
     initdb)
-        python manage.py syncdb --migrate
+        python manage.py migrate --fake-initial
         ;;
     *)
         /usr/local/bin/gunicorn wirecloud_instance.wsgi:application -w 2 -b :8000
