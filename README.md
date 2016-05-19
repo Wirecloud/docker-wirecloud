@@ -28,7 +28,7 @@ To know how to get and run the composable images go to the [Composable Section](
 
 ## Standalone
 
-Running the standalone images are really simple. In the examples we are going to use the `latest` version but should work with `0.6` and `0.7` too.
+Running the standalone images are really simple. In the examples we are going to use the `latest` version but should work with `0.7` and `0.8` too.
 
 First, we need to get and run the image:
 
