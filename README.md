@@ -46,18 +46,31 @@ Let's explain the command:
 
 Now you can go to the browser and see `wirecloud` in the browser. If you used the port 80, just go to [http://localhost](http://localhost).
 
-If you want to stop/restart/start the instance, just execute:
+If you want to stop/restart/start/admin the instance, just execute:
 
 ```
 # Stop the instance
 docker stop wirecloud
 # Start the instance
 docker start wirecloud
-# Restart the insance
+# Restart the instance
 docker restart wirecloud
+# Open a terminal on the instance
+docker -it wirecloud /bin/bash
 ```
 
-In that way, you won't loose any data.
+### Customizations
+
+The standalone image uses a volume for `/opt/wirecloud_instance` (the path
+where the WireCloud instance is stored), this means that any change you make to
+the `settings.py` file will be persisted.
+
+If you want to use a different theme, you can create it on
+`/opt/wirecloud_instance`. See the
+[documentation](https://wirecloud.readthedocs.io/en/stable/development/platform/themes/) for more info.
+
+> **Note**: Rembember that any change made outside the defined volumes will be
+> lost if the image is updated.
 
 ## Composable
 
@@ -129,6 +142,16 @@ Superuser created successfully.
 ```
 
 Now your WireCloud instance is ready to be used! Open your browser and point it to your docker machine using `http://` (e.g. `http://192.168.99.100`).
+
+### Customizations
+
+The composable image uses two volumes, one for `/opt/wirecloud_instance` and
+another for `/var/www/static`. The only difference with the standalone image is
+that the static files are stored in `/var/www/static` instead of being stored in
+`/opt/wirecloud_instance/static`.
+
+> **Note**: Rembember that any change made outside the defined volumes will be
+> lost if the image is updated.
 
 ### Other useful commands
 
