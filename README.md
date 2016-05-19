@@ -33,7 +33,7 @@ Running the standalone images are really simple. In the examples we are going to
 First, we need to get and run the image:
 
 ```
-docker run -d -p 80:80 --name wirecloud wirecloud/fiware-wirecloud:latest
+docker run -d -p 80:80 --name wirecloud fiware/wirecloud:latest
 ```
 
 Let's explain the command:
@@ -42,7 +42,7 @@ Let's explain the command:
 - `-d`: Detach the image.
 - `-p 80:80`: Assing the local port 80 to the image port 80. If you want to assign other port, for example, the port 8080, this would be: `-p 8080:80`
 - `--name wirecloud`: Give a static name to the image running, this will be useful later when we want to stop and start again the instance without loosing data. The name can be whatever you want.
-- `wirecloud/fiware-wirecloud:latest`: The name of the image.
+- `fiware/wirecloud:latest`: The name of the image.
 
 Now you can go to the browser and see `wirecloud` in the browser. If you used the port 80, just go to [http://localhost](http://localhost).
 
