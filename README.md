@@ -61,16 +61,11 @@ docker -it wirecloud /bin/bash
 
 ### Customizations
 
-The standalone image uses a volume for `/opt/wirecloud_instance` (the path
-where the WireCloud instance is stored), this means that any change you make to
-the `settings.py` file will be persisted.
+The standalone image uses a volume for `/opt/wirecloud_instance` (the path where the WireCloud instance is stored), this means that any change you make to the `settings.py` file will be persisted.
 
-If you want to use a different theme, you can create it on
-`/opt/wirecloud_instance`. See the
-[documentation](https://wirecloud.readthedocs.io/en/stable/development/platform/themes/) for more info.
+If you want to use a different theme, you can create it on `/opt/wirecloud_instance`. See the [documentation](https://wirecloud.readthedocs.io/en/stable/development/platform/themes/) for more info.
 
-> **Note**: Rembember that any change made outside the defined volumes will be
-> lost if the image is updated.
+> **Note**: Rembember that any change made outside the defined volumes will be lost if the image is updated.
 
 ## Composable
 
@@ -145,13 +140,9 @@ Now your WireCloud instance is ready to be used! Open your browser and point it 
 
 ### Customizations
 
-The composable image uses two volumes, one for `/opt/wirecloud_instance` and
-another for `/var/www/static`. The only difference with the standalone image is
-that the static files are stored in `/var/www/static` instead of being stored in
-`/opt/wirecloud_instance/static`.
+The composable image uses two volumes, one for `/opt/wirecloud_instance` and another for `/var/www/static`. The only difference with the standalone image is that the static files are stored in `/var/www/static` instead of being stored in `/opt/wirecloud_instance/static`.
 
-> **Note**: Rembember that any change made outside the defined volumes will be
-> lost if the image is updated.
+> **Note**: Rembember that any change made outside the defined volumes will be lost if the image is updated.
 
 ### Other useful commands
 
