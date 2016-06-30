@@ -6,6 +6,12 @@ case "$1" in
     initdb)
         python manage.py migrate --fake-initial
         ;;
+    createdefaultsuperuser)
+        echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'admin@example.com', 'admin')" | python manage.py shell > /dev/null
+        ;;
+    createsuperuser)
+        python manage.py createsuperuser
+        ;;
     *)
         /usr/local/bin/gunicorn wirecloud_instance.wsgi:application -w 2 -b :8000
         ;;
