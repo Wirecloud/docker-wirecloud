@@ -113,20 +113,37 @@ $ docker-compose up -d
 
 The `-d` flag start the services daemonized.
 
-Now you have to initialize the database (PostgreSQL), to do that run this command and answer the questions to create the new super user (this step may fail if you installed `docker-compose` using pip):
+Now you have to initialize the database (PostgreSQL) by running the `initdb` command:
 
 ```
 $ docker-compose run --rm wirecloud initdb
-[...]
-You just installed Django's auth system, which means you don't have any superusers defined.
-Would you like to create one now? (yes/no): yes
-Username (leave blank to use 'root'): admin
-Email address: <yourmail>
-Password: <yourpassword>
-Password (again): <yourpassword>
-Superuser created successfully.
-[...]
 ```
+
+Once initalized the db, you have to create an administrator user:
+
+```
+$ docker-compose run --rm wirecloud createsuperuser
+Username (leave blank to use 'root'): admin
+Email address: ${youremail}
+Password: ${yourpassword}
+Password (again): ${yourpassword}
+Superuser created successfully.
+```
+
+> **Note**: You don't need to execute the `createsuperuser` command when using version 0.8 and bellow of the images as those images make uses of the `syncdb` command available on Django 1.7:
+>
+> ```
+> $ docker-compose run --rm wirecloud initdb
+> [...]
+> You just installed Django's auth system, which means you don't have any superusers defined.
+> Would you like to create one now? (yes/no): yes
+> Username (leave blank to use 'root'): admin
+> Email address: ${youremail}
+> Password: ${yourpassword}
+> Password (again): ${yourpassword}
+> Superuser created successfully.
+> [...]
+> ```
 
 Now your WireCloud instance is ready to be used! Open your browser and point it to your docker machine using `http://` (e.g. `http://192.168.99.100`).
 

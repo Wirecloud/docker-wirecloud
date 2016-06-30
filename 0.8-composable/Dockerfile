@@ -21,7 +21,6 @@ RUN sed -i "s/SECRET_KEY = '[^']\+'/SECRET_KEY = 'TOCHANGE_SECRET_KEY'/g" wirecl
 
 RUN sed -i "s/STATIC_ROOT = path.join(BASEDIR, '..\/static')/STATIC_ROOT = '\/var\/www\/static'/g" wirecloud_instance/settings.py
 
-# RUN python manage.py syncdb --migrate
 RUN python manage.py collectstatic --noinput
 RUN python manage.py compress --force
 
