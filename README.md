@@ -195,7 +195,7 @@ This document should provide everything you need to install WireCloud using dock
 
 If you have any problems with or questions about this image, please contact us through a [GitHub issue](https://github.com/Wirecloud/docker-wirecloud/issues).
 
-You can also reach many of the official image maintainers via the `fiware` and `fiware-wirecloud` tags on StackOverflow](http://stackoverflow.com/questions/tagged/fiware-wirecloud).
+You can also reach many of the official image maintainers via the `fiware` and `fiware-wirecloud` tags on [StackOverflow](http://stackoverflow.com/questions/tagged/fiware-wirecloud).
 
 ### Contributing
 
