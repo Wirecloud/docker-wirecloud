@@ -113,16 +113,28 @@ $ docker-compose up -d
 
 The `-d` flag start the services daemonized.
 
-Now you have to initialize the database (PostgreSQL) by running the `initdb` command:
+Now you have to initialize the database (PostgreSQL) by running the `initdb` command but, before running it, we have to obtain the container name assigned to the wirecloud service. This can be accomplished by running the `docker-compose ps` command:
 
 ```
-$ docker-compose run --rm wirecloud initdb
+$ docker-compose ps
+         Name                        Command               State           Ports
+-----------------------------------------------------------------------------------------
+hubdocs_data_1            /docker-entrypoint.sh /bin ...   Up      5432/tcp
+hubdocs_nginx_1           /usr/sbin/nginx                  Up      0.0.0.0:80->80/tcp
+hubdocs_postgres_1        /docker-entrypoint.sh postgres   Up      0.0.0.0:5432->5432/tcp
+hubdocs_wirecloud_1       /docker-entrypoint.sh            Up      8000/tcp
+```
+
+In this case, the container is called `hubdocs_wirecloud_1`, so we have to run the following command:
+
+```
+$ docker exec -it hubdocs_wirecloud_1 /docker-entrypoint.sh initdb
 ```
 
 Once initalized the db, you have to create an administrator user:
 
 ```
-$ docker-compose run --rm wirecloud createsuperuser
+$ docker exec -it hubdocs_wirecloud_1 /docker-entrypoint.sh createsuperuser
 Username (leave blank to use 'root'): admin
 Email address: ${youremail}
 Password: ${yourpassword}
@@ -133,7 +145,7 @@ Superuser created successfully.
 > **Note**: You don't need to execute the `createsuperuser` command when using version 0.8 of the image as those images make uses of the `syncdb` command available on Django 1.7:
 >
 > ```
-> $ docker-compose run --rm wirecloud initdb
+> $ docker exec -it hubdocs_wirecloud_1 /docker-entrypoint.sh initdb
 > [...]
 > You just installed Django's auth system, which means you don't have any superusers defined.
 > Would you like to create one now? (yes/no): yes
@@ -154,16 +166,6 @@ The composable image uses two volumes, one for `/opt/wirecloud_instance` and ano
 > **Note**: Rembember that any change made outside the defined volumes will be lost if the image is updated.
 
 ### Other useful commands
-
-- See the containers and the state
-
-        $ docker-compose ps
-                      Name                            Command               State           Ports
-        --------------------------------------------------------------------------------------------------
-        dockerwirecloud1_data_1            /docker-entrypoint.sh true       Up      5432/tcp
-        dockerwirecloud1_nginx_1           /usr/sbin/nginx                  Up      0.0.0.0:80->80/tcp
-        dockerwirecloud1_postgres_1        /docker-entrypoint.sh postgres   Up      0.0.0.0:5432->5432/tcp
-        dockerwirecloud1_wirecloud_1       /usr/local/bin/gunicorn wi ...   Up      8000/tcp
 
 - See the logs:
 

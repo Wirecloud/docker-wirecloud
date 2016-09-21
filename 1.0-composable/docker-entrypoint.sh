@@ -5,7 +5,6 @@ sed -i "s/SECRET_KEY = 'TOCHANGE_SECRET_KEY'/SECRET_KEY = '$(python -c "from dja
 case "$1" in
     initdb)
         python manage.py migrate --fake-initial
-        python manage.py collectstatic --noinput
         su wirecloud -c "python manage.py populate"
         ;;
     createdefaultsuperuser)
@@ -15,6 +14,6 @@ case "$1" in
         python manage.py createsuperuser
         ;;
     *)
-        /usr/local/bin/gunicorn wirecloud_instance.wsgi:application -w 2 -b :8000
+        su wirecloud -c "/usr/local/bin/gunicorn wirecloud_instance.wsgi:application -w 2 -b :8000"
         ;;
 esac
