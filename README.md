@@ -1,11 +1,11 @@
 # Supported tags and respective `Dockerfile` links #
 
-- [`0.9`, `latest`](https://github.com/Wirecloud/docker-wirecloud/blob/master/0.9/Dockerfile)
+- [`1.0`, `latest`](https://github.com/Wirecloud/docker-wirecloud/blob/master/1.0/Dockerfile)
+- [`0.9`](https://github.com/Wirecloud/docker-wirecloud/blob/master/0.9/Dockerfile)
 - [`0.8`](https://github.com/Wirecloud/docker-wirecloud/blob/master/0.8/Dockerfile)
-- [`0.7`](https://github.com/Wirecloud/docker-wirecloud/blob/master/0.7/Dockerfile)
-- [`0.9-composable`, `latest-composable`](https://github.com/Wirecloud/docker-wirecloud/blob/master/0.9-composable/Dockerfile)
+- [`1.0-composable`, `latest-composable`](https://github.com/Wirecloud/docker-wirecloud/blob/master/1.0-composable/Dockerfile)
+- [`0.9-composable`](https://github.com/Wirecloud/docker-wirecloud/blob/master/0.9-composable/Dockerfile)
 - [`0.8-composable`](https://github.com/Wirecloud/docker-wirecloud/blob/master/0.8-composable/Dockerfile)
-- [`0.7-composable`](https://github.com/Wirecloud/docker-wirecloud/blob/master/0.7-composable/Dockerfile)
 
 
 ## What is WireCloud?
@@ -20,7 +20,7 @@ There are two types of images, the "standalone" images and the "composable" imag
 
 ## Standalone
 
-Running the standalone images are really simple. In the examples we are going to use the `latest` version but should work with `0.7` and `0.8` too.
+Running the standalone images are really simple. In the examples we are going to use the `latest` version but should work with `0.8` and `0.9` too.
 
 First, we need to get and run the image:
 
@@ -130,7 +130,7 @@ Password (again): ${yourpassword}
 Superuser created successfully.
 ```
 
-> **Note**: You don't need to execute the `createsuperuser` command when using version 0.8 and bellow of the images as those images make uses of the `syncdb` command available on Django 1.7:
+> **Note**: You don't need to execute the `createsuperuser` command when using version 0.8 of the image as those images make uses of the `syncdb` command available on Django 1.7:
 >
 > ```
 > $ docker-compose run --rm wirecloud initdb
