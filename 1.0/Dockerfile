@@ -3,7 +3,7 @@ FROM python:2
 MAINTAINER WireCloud Team <wirecloud@conwet.com>
 
 # Install wirecloud & dependencies
-RUN pip install "wirecloud<0.8.0"
+RUN pip install "wirecloud<1.1"
 
 RUN apt-get -y update
 RUN apt-get install -y apache2 libapache2-mod-wsgi
