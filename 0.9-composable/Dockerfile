@@ -22,9 +22,10 @@ RUN sed -i "s/'ENGINE': 'django.db.backends.'/'ENGINE': 'django.db.backends.post
     sed -i "s/SECRET_KEY = '[^']\+'/SECRET_KEY = 'TOCHANGE_SECRET_KEY'/g" wirecloud_instance/settings.py; \
     sed -i "s/STATIC_ROOT = path.join(BASEDIR, '..\/static')/STATIC_ROOT = '\/var\/www\/static'/g" wirecloud_instance/settings.py
 
-RUN python manage.py collectstatic --noinput
+RUN python manage.py collectstatic --noinput; \
+    chown -R wirecloud:wirecloud /var/www/static
 
-# volumes must be created after running the collectstatic and compress commands
+# volumes must be created after running the collectstatic command
 VOLUME /var/www/static
 VOLUME /opt/wirecloud_instance
 
