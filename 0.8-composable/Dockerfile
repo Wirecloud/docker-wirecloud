@@ -23,7 +23,7 @@ RUN sed -i "s/'ENGINE': 'django.db.backends.'/'ENGINE': 'django.db.backends.post
     sed -i "s/STATIC_ROOT = path.join(BASEDIR, '..\/static')/STATIC_ROOT = '\/var\/www\/static'/g" wirecloud_instance/settings.py
 
 RUN python manage.py collectstatic --noinput; \
-    python manage.py compress --force
+    python manage.py compress --force; \
     chown -R wirecloud:wirecloud /var/www/static
 
 # volumes must be created after running the collectstatic and compress commands
