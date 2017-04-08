@@ -69,14 +69,16 @@ First, install docker compose following [this steps](https://docs.docker.com/com
 
 > Take into account that some users have reporeted errors when instaing docker-compose from pip.
 
-You can use [this example `docker-compose.yml` file](https://github.com/Wirecloud/docker-wirecloud/blob/master/hub-docs/docker-compose.yml) as base for deploying your WireCloud infrastructure:
+You can use [this example `docker-compose.yml` file](https://github.com/Wirecloud/docker-wirecloud/blob/master/hub-docs/docker-compose.yml):
 
 ```yaml
 nginx:
     restart: always
-    image: wirecloud/django-nginx-composable:latest
+    image: nginx:latest
     ports:
         - "80:80"
+    volumes:
+        - ./nginx.conf:/etc/nginx/nginx.conf:ro
     volumes_from:
         - wirecloud
     links:
@@ -104,8 +106,62 @@ wirecloud:
         - postgres:postgres
 ```
 
-Once created the `docker-compose.yml` file, run the following command from the
-same folder for starting all the containers:
+and [this `nginx.conf` file](https://github.com/Wirecloud/docker-wirecloud/blob/master/hub-docs/nginx.conf) as base for deploying your WireCloud infrastructure:
+
+```nginx
+user  nginx;
+worker_processes  1;
+
+error_log  /var/log/nginx/error.log warn;
+pid        /var/run/nginx.pid;
+
+
+events {
+    worker_connections  1024;
+}
+
+
+http {
+    include       /etc/nginx/mime.types;
+    default_type  application/octet-stream;
+
+    log_format  main  '$remote_addr - $remote_user [$time_local] "$request" '
+                      '$status $body_bytes_sent "$http_referer" '
+                      '"$http_user_agent" "$http_x_forwarded_for"';
+
+    access_log  /var/log/nginx/access.log  main;
+
+    sendfile        on;
+    #tcp_nopush     on;
+
+    keepalive_timeout  65;
+
+    #gzip  on;
+
+    server {
+
+        listen 80;
+        server_name example.org;
+        client_max_body_size 20M;
+        charset utf-8;
+
+        location /static {
+            alias /var/www/static;
+        }
+
+        location / {
+            proxy_pass http://wirecloud:8000;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        }
+
+    }
+}
+```
+
+Once created the `docker-compose.yml` and the `nginx.conf` files, run the
+following command from the same folder for starting all the containers:
 
 ```
 $ docker-compose up -d

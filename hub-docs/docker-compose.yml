@@ -1,8 +1,10 @@
 nginx:
     restart: always
-    image: wirecloud/django-nginx-composable:latest
+    image: nginx:latest
     ports:
         - "80:80"
+    volumes:
+        - ./nginx.conf:/etc/nginx/nginx.conf:ro
     volumes_from:
         - wirecloud
     links:
