@@ -14,6 +14,12 @@ WireCloud builds on cutting-edge end-user development, RIA and semantic technolo
 
 WireCloud is part of [FIWARE](https://www.fiware.org/). Check it out in the [Catalogue](https://catalogue.fiware.org/enablers/application-mashup-wirecloud)
 
+<p align="center">
+    <a href="https://github.com/Wirecloud/wirecloud">
+        <img width="256" src="src/wirecloud/defaulttheme/static/images/logos/wc1.png">
+    </a>
+</p>
+
 ## How to use these images.
 
 There are two types of images, the "standalone" images and the "composable" images. The standalone images comes with everything ready to run WireCloud directly by running the image and without having to configure it (no recommended for production). The composable images are designed to work with `docker-compose` and support a more flexible configuration scheme.
