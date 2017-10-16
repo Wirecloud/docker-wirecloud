@@ -2,10 +2,15 @@ FROM python:2
 
 MAINTAINER WireCloud Team <wirecloud@conwet.com>
 
-COPY ./wirecloud-dev.whl /
-RUN pip install /wirecloud-dev.whl "gunicorn==19.3.0" "psycopg2==2.6"
-
 WORKDIR /opt
+
+# Install WireCloud & dependencies
+RUN git clone --depth=1 https://github.com/Wirecloud/wirecloud.git; \
+    cd wirecloud/src; \
+    python setup.py bdist_wheel; \
+    pip install dist/*.whl; \
+    cd ../.. \
+    rm -rf wirecloud
 
 RUN adduser --system --group --shell /bin/bash wirecloud; \
     wirecloud-admin startproject wirecloud_instance; \
