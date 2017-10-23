@@ -4,6 +4,8 @@ MAINTAINER WireCloud Team <wirecloud@conwet.com>
 
 WORKDIR /opt
 
+RUN pip install "gunicorn==19.3.0" "psycopg2==2.6"
+
 # Install WireCloud & dependencies
 RUN git clone --depth=1 https://github.com/Wirecloud/wirecloud.git; \
     cd wirecloud/src; \
@@ -19,7 +21,8 @@ RUN adduser --system --group --shell /bin/bash wirecloud; \
 
 WORKDIR /opt/wirecloud_instance
 
-RUN sed -i "s/'ENGINE': 'django.db.backends.'/'ENGINE': 'django.db.backends.postgresql_psycopg2'/g" wirecloud_instance/settings.py; \
+RUN pip install psycopg2; \
+    sed -i "s/'ENGINE': 'django.db.backends.'/'ENGINE': 'django.db.backends.postgresql_psycopg2'/g" wirecloud_instance/settings.py; \
     sed -i "s/'NAME': ''/'NAME': 'postgres'/g" wirecloud_instance/settings.py; \
     sed -i "s/'USER': ''/'USER': 'postgres'/g" wirecloud_instance/settings.py; \
     sed -i "s/'PASSWORD': ''/'PASSWORD': 'postgres'/g" wirecloud_instance/settings.py; \

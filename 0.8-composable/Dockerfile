@@ -2,9 +2,9 @@ FROM python:2
 
 MAINTAINER WireCloud Team <wirecloud@conwet.com>
 
-RUN pip install "wirecloud<0.9.0" "gunicorn==19.3.0" "psycopg2==2.6"
-
 WORKDIR /opt
+
+RUN pip install "wirecloud<0.9.0" "gunicorn==19.3.0" "psycopg2==2.6"
 
 RUN adduser --system --group --shell /bin/bash wirecloud; \
     wirecloud-admin startproject wirecloud_instance; \
