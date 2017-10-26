@@ -4,9 +4,7 @@ MAINTAINER WireCloud Team <wirecloud@conwet.com>
 
 WORKDIR /opt
 
-RUN pip install social-auth-app-django
-
-RUN pip install "gunicorn==19.3.0" "psycopg2==2.6"
+RUN pip install social-auth-app-django "gunicorn==19.3.0" "psycopg2==2.6"
 
 # Install WireCloud & dependencies
 RUN git clone --depth=1 https://github.com/Wirecloud/wirecloud.git; \
@@ -17,14 +15,14 @@ RUN git clone --depth=1 https://github.com/Wirecloud/wirecloud.git; \
     rm -rf wirecloud
 
 RUN adduser --system --group --shell /bin/bash wirecloud; \
+    pip install channels asgi_ipc asgi_redis asgi_rabbitmq; \
     wirecloud-admin startproject wirecloud_instance; \
     chown -R wirecloud:wirecloud wirecloud_instance; \
     chmod a+x wirecloud_instance/manage.py
 
 WORKDIR /opt/wirecloud_instance
 
-RUN pip install psycopg2; \
-    sed -i "s/'ENGINE': 'django.db.backends.'/'ENGINE': 'django.db.backends.postgresql_psycopg2'/g" wirecloud_instance/settings.py; \
+RUN sed -i "s/'ENGINE': 'django.db.backends.'/'ENGINE': 'django.db.backends.postgresql_psycopg2'/g" wirecloud_instance/settings.py; \
     sed -i "s/'NAME': ''/'NAME': 'postgres'/g" wirecloud_instance/settings.py; \
     sed -i "s/'USER': ''/'USER': 'postgres'/g" wirecloud_instance/settings.py; \
     sed -i "s/'PASSWORD': ''/'PASSWORD': 'postgres'/g" wirecloud_instance/settings.py; \

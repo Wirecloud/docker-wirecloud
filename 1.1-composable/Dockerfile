@@ -4,11 +4,12 @@ MAINTAINER WireCloud Team <wirecloud@conwet.com>
 
 WORKDIR /opt
 
-RUN pip install social-auth-app-django
+RUN pip install social-auth-app-django "gunicorn==19.3.0" "psycopg2==2.6"
 
-RUN pip install "wirecloud<1.2" "gunicorn==19.3.0" "psycopg2==2.6"
+RUN pip install "wirecloud<1.2"
 
 RUN adduser --system --group --shell /bin/bash wirecloud; \
+    pip install channels asgi_ipc asgi_redis asgi_rabbitmq; \
     wirecloud-admin startproject wirecloud_instance; \
     chown -R wirecloud:wirecloud wirecloud_instance; \
     chmod a+x wirecloud_instance/manage.py
