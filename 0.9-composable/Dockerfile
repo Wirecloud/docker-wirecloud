@@ -4,7 +4,7 @@ MAINTAINER WireCloud Team <wirecloud@conwet.com>
 
 WORKDIR /opt
 
-RUN pip install social-auth-app-django
+RUN pip install "python-social-auth<0.3,>=0.2.2"
 
 RUN pip install "wirecloud<1.0" "gunicorn==19.3.0" "psycopg2==2.6"
 
