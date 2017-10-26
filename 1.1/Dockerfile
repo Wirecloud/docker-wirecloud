@@ -13,7 +13,7 @@ COPY ["apache-config.conf", "/etc/apache2/sites-enabled/000-default.conf"]
 WORKDIR /opt
 
 # Install WireCloud & dependencies
-RUN pip install "wirecloud<0.9.0"
+RUN pip install "wirecloud<1.2"
 
 RUN wirecloud-admin startproject wirecloud_instance --quick-start; \
     chown -R wirecloud:wirecloud wirecloud_instance

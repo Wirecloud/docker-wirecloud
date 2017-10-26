@@ -4,7 +4,14 @@ sed -i "s/SECRET_KEY = 'TOCHANGE_SECRET_KEY'/SECRET_KEY = '$(python -c "from dja
 
 case "$1" in
     initdb)
-        python manage.py syncdb --migrate
+        python manage.py migrate --fake-initial
+        su wirecloud -c "python manage.py populate"
+        ;;
+    createdefaultsuperuser)
+        echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'admin@example.com', 'admin')" | python manage.py shell > /dev/null
+        ;;
+    createsuperuser)
+        python manage.py createsuperuser
         ;;
     *)
         su wirecloud -c "/usr/local/bin/gunicorn wirecloud_instance.wsgi:application -w 2 -b :8000"

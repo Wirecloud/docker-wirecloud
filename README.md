@@ -1,11 +1,11 @@
 # Supported tags and respective `Dockerfile` links #
 
-- [`1.0`, `latest`](https://github.com/Wirecloud/docker-wirecloud/blob/master/1.0/Dockerfile)
-- [`1.0-composable`, `latest-composable`](https://github.com/Wirecloud/docker-wirecloud/blob/master/1.0-composable/Dockerfile)
+- [`1.1`, `latest`](https://github.com/Wirecloud/docker-wirecloud/blob/master/1.1/Dockerfile)
+- [`1.1-composable`, `latest-composable`](https://github.com/Wirecloud/docker-wirecloud/blob/master/1.1-composable/Dockerfile)
+- [`1.0`](https://github.com/Wirecloud/docker-wirecloud/blob/master/1.0/Dockerfile)
+- [`1.0-composable`](https://github.com/Wirecloud/docker-wirecloud/blob/master/1.0-composable/Dockerfile)
 - [`0.9`](https://github.com/Wirecloud/docker-wirecloud/blob/master/0.9/Dockerfile)
 - [`0.9-composable`](https://github.com/Wirecloud/docker-wirecloud/blob/master/0.9-composable/Dockerfile)
-- [`0.8`](https://github.com/Wirecloud/docker-wirecloud/blob/master/0.8/Dockerfile)
-- [`0.8-composable`](https://github.com/Wirecloud/docker-wirecloud/blob/master/0.8-composable/Dockerfile)
 - [`dev`](https://github.com/Wirecloud/docker-wirecloud/blob/master/dev/Dockerfile)
 - [`dev-composable`](https://github.com/Wirecloud/docker-wirecloud/blob/master/dev-composable/Dockerfile)
 
