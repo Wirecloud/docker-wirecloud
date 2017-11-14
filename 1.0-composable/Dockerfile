@@ -4,7 +4,7 @@ MAINTAINER WireCloud Team <wirecloud@conwet.com>
 
 WORKDIR /opt
 
-RUN pip install "python-social-auth<0.3,>=0.2.2" "gunicorn==19.3.0" "psycopg2==2.6"
+RUN pip install "python-social-auth<0.3,>=0.2.2" "gunicorn==19.3.0" "psycopg2==2.6" pylibmc
 
 RUN pip install "wirecloud<1.1"
 

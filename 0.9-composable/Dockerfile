@@ -6,7 +6,7 @@ WORKDIR /opt
 
 RUN pip install "python-social-auth<0.3,>=0.2.2"
 
-RUN pip install "wirecloud<1.0" "gunicorn==19.3.0" "psycopg2==2.6"
+RUN pip install "wirecloud<1.0" "gunicorn==19.3.0" "psycopg2==2.6" pylibmc
 
 RUN adduser --system --group --shell /bin/bash wirecloud; \
     wirecloud-admin startproject wirecloud_instance; \
