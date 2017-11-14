@@ -4,7 +4,9 @@ MAINTAINER WireCloud Team <wirecloud@conwet.com>
 
 WORKDIR /opt
 
-RUN pip install social-auth-app-django "gunicorn==19.3.0" "psycopg2==2.6" pylibmc
+RUN apt update; \
+    apt install libmemcached-dev; \
+    pip install social-auth-app-django "gunicorn==19.3.0" "psycopg2==2.6" pylibmc
 
 RUN pip install "wirecloud<1.2"
 
