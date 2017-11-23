@@ -5,8 +5,8 @@ MAINTAINER WireCloud Team <wirecloud@conwet.com>
 WORKDIR /opt
 
 RUN apt update; \
-    apt install libmemcached-dev; \
-    pip install social-auth-app-django "gunicorn==19.3.0" "psycopg2==2.6" pylibmc
+    apt install -y libmemcached-dev; \
+    pip install social-auth-app-django "gunicorn==19.3.0" "psycopg2==2.6" pylibmc pysolr "elasticsearch==2.4.1"
 
 # Install WireCloud & dependencies
 RUN git clone --depth=1 https://github.com/Wirecloud/wirecloud.git; \
