@@ -1,0 +1,44 @@
+version: "3"
+
+services:
+
+    nginx:
+        restart: always
+        image: nginx:latest
+        ports:
+            - 80:80
+        volumes:
+            - ./nginx.conf:/etc/nginx/nginx.conf:ro
+            - ./wirecloud-static:/var/www/static:ro
+        links:
+            - wirecloud
+
+
+    postgres:
+        restart: always
+        image: postgres:latest
+        volumes:
+            - ./postgres-data:/var/lib/postgresql/data
+        ports:
+            - 127.0.0.1:5432:5432
+
+
+    elasticsearch:
+        restart: always
+        image: elasticsearch:2.4
+        volumes:
+            - ./elasticsearch-data:/usr/share/elasticsearch/data
+        command: elasticsearch -Des.index.max_result_window=50000
+
+
+    wirecloud:
+        restart: always
+        image: fiware/wirecloud:dev-composable
+        links:
+            - postgres:postgres
+            - elasticsearch:elasticsearch
+        ports:
+            - 127.0.0.1:8000:8000
+        volumes:
+            - ./wirecloud-instance:/opt/wirecloud_instance
+            - ./wirecloud-static:/var/www/static
