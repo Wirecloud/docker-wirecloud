@@ -80,7 +80,7 @@ nginx:
     restart: always
     image: nginx:latest
     ports:
-        - "80:80"
+        - 80:80
     volumes:
         - ./nginx.conf:/etc/nginx/nginx.conf:ro
     volumes_from:
@@ -88,26 +88,26 @@ nginx:
     links:
         - wirecloud:wirecloud
 
+
 postgres:
     restart: always
     image: postgres:latest
-    volumes_from:
-        - data
-    ports:
-        - "5432:5432"
-
-data:
-    restart: always
-    image: postgres:latest
     volumes:
-        - /var/lib/postgresql
-    command: /bin/true
+        - ./postgres-data:/var/lib/postgresql/data
+    ports:
+        - 127.0.0.1:5432:5432
+
 
 wirecloud:
     restart: always
     image: fiware/wirecloud:latest-composable
     links:
         - postgres:postgres
+    ports:
+        - 127.0.0.1:8000:8000
+    volumes:
+        - ./wirecloud_instance:/opt/wirecloud_instance
+        - ./static:/var/www/static
 ```
 
 and [this `nginx.conf` file](https://github.com/Wirecloud/docker-wirecloud/blob/master/hub-docs/nginx.conf) as base for deploying your WireCloud infrastructure:
