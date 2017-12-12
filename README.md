@@ -16,7 +16,7 @@ WireCloud builds on cutting-edge end-user development, RIA and semantic technolo
 
 WireCloud is part of [FIWARE](https://www.fiware.org/). Check it out in the [Catalogue](https://catalogue.fiware.org/enablers/application-mashup-wirecloud)
 
-[![WireCloud's logo](logo.png)](https://github.com/Wirecloud/wirecloud)
+[![WireCloud's logo](https://raw.githubusercontent.com/Wirecloud/docker-wirecloud/master/logo.png)](https://github.com/Wirecloud/wirecloud)
 
 ## How to use these images.
 
