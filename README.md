@@ -24,7 +24,7 @@ There are two types of images, the "standalone" images and the "composable" imag
 
 ## Standalone
 
-Running the standalone images are really simple. In the examples we are going to use the `latest` version but should work with `0.8` and `0.9` too.
+Running the standalone images are really simple. In the examples we are going to use the `latest` version but should work with `1.1`, `1.0` and `0.9` too.
 
 First, we need to get and run the image:
 
@@ -201,21 +201,6 @@ Password: ${yourpassword}
 Password (again): ${yourpassword}
 Superuser created successfully.
 ```
-
-> **Note**: You don't need to execute the `createsuperuser` command when using version 0.8 of the image as those images make uses of the `syncdb` command available on Django 1.7:
->
-> ```
-> $ docker exec -it hubdocs_wirecloud_1 /docker-entrypoint.sh initdb
-> [...]
-> You just installed Django's auth system, which means you don't have any superusers defined.
-> Would you like to create one now? (yes/no): yes
-> Username (leave blank to use 'root'): admin
-> Email address: ${youremail}
-> Password: ${yourpassword}
-> Password (again): ${yourpassword}
-> Superuser created successfully.
-> [...]
-> ```
 
 Now your WireCloud instance is ready to be used! Open your browser and point it to your docker machine using `http://` (e.g. `http://192.168.99.100`).
 
