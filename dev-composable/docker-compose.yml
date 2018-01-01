@@ -37,6 +37,9 @@ services:
         links:
             - postgres:postgres
             - elasticsearch:elasticsearch
+        depends_on:
+            - postgres
+            - elasticsearch
         ports:
             - 127.0.0.1:8000:8000
         volumes:
