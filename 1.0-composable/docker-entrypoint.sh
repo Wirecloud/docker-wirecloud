@@ -1,5 +1,20 @@
 #!/bin/bash
 
+# Wait DB to be accepting requests
+exec 8<>/dev/tcp/postgres/5432
+DB_STATUS=$?
+
+i=0
+
+while [[ ${DB_STATUS} -ne 0 && ${i} -lt 50 ]]; do
+    sleep 5
+    exec 8<>/dev/tcp/postgres/5432
+    DB_STATUS=$?
+
+    i=${i}+1
+done
+
+# Check if we have to init wirecloud configuration
 if [ ! -f /opt/wirecloud_instance/wirecloud_instance/settings.py ]; then
 
     cd /opt
@@ -31,6 +46,7 @@ fi
 
 cd /opt/wirecloud_instance
 
+# Real entry point
 case "$1" in
     initdb)
         python manage.py migrate --fake-initial
