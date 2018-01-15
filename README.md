@@ -76,38 +76,43 @@ First, install docker compose following [this steps](https://docs.docker.com/com
 You can use [this example `docker-compose.yml` file](https://github.com/Wirecloud/docker-wirecloud/blob/master/hub-docs/docker-compose.yml):
 
 ```yaml
-nginx:
-    restart: always
-    image: nginx:latest
-    ports:
-        - 80:80
-    volumes:
-        - ./nginx.conf:/etc/nginx/nginx.conf:ro
-    volumes_from:
-        - wirecloud
-    links:
-        - wirecloud:wirecloud
+version: "3"
+
+services:
+
+    nginx:
+        restart: always
+        image: nginx:latest
+        ports:
+            - 80:80
+        volumes:
+            - ./nginx.conf:/etc/nginx/nginx.conf:ro
+            - ./static:/var/www/static:ro
+        links:
+            - wirecloud:wirecloud
 
 
-postgres:
-    restart: always
-    image: postgres:latest
-    volumes:
-        - ./postgres-data:/var/lib/postgresql/data
-    ports:
-        - 127.0.0.1:5432:5432
+    postgres:
+        restart: always
+        image: postgres:latest
+        volumes:
+            - ./postgres-data:/var/lib/postgresql/data
+        ports:
+            - 127.0.0.1:5432:5432
 
 
-wirecloud:
-    restart: always
-    image: fiware/wirecloud:latest-composable
-    links:
-        - postgres:postgres
-    ports:
-        - 127.0.0.1:8000:8000
-    volumes:
-        - ./wirecloud_instance:/opt/wirecloud_instance
-        - ./static:/var/www/static
+    wirecloud:
+        restart: always
+        image: fiware/wirecloud:latest-composable
+        links:
+            - postgres:postgres
+        depends_on:
+            - postgres
+        ports:
+            - 127.0.0.1:8000:8000
+        volumes:
+            - ./wirecloud_instance:/opt/wirecloud_instance
+            - ./static:/var/www/static
 ```
 
 and [this `nginx.conf` file](https://github.com/Wirecloud/docker-wirecloud/blob/master/hub-docs/nginx.conf) as base for deploying your WireCloud infrastructure:
