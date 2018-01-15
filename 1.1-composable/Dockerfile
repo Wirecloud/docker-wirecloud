@@ -1,11 +1,11 @@
-FROM python:2
+FROM python:2-stretch
 
 MAINTAINER WireCloud Team <wirecloud@conwet.com>
 
 WORKDIR /opt
 
 RUN apt update; \
-    apt install libmemcached-dev; \
+    apt install -y libmemcached-dev; \
     pip install social-auth-app-django "gunicorn==19.3.0" "psycopg2==2.6" pylibmc
 
 RUN pip install "wirecloud<1.2"
