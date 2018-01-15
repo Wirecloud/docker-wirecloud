@@ -58,6 +58,6 @@ case "$1" in
         python manage.py createsuperuser
         ;;
     *)
-        sudo su -c "/usr/local/bin/gunicorn wirecloud_instance.wsgi:application -w 2 -b :8000"
+        su wirecloud -c "/usr/local/bin/gunicorn wirecloud_instance.wsgi:application -w 2 -b :8000"
         ;;
 esac
