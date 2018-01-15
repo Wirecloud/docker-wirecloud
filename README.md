@@ -179,7 +179,6 @@ Now you have to initialize the database (PostgreSQL) by running the `initdb` com
 $ docker-compose ps
          Name                        Command               State           Ports
 -----------------------------------------------------------------------------------------
-hubdocs_data_1            /docker-entrypoint.sh /bin ...   Up      5432/tcp
 hubdocs_nginx_1           /usr/sbin/nginx                  Up      0.0.0.0:80->80/tcp
 hubdocs_postgres_1        /docker-entrypoint.sh postgres   Up      0.0.0.0:5432->5432/tcp
 hubdocs_wirecloud_1       /docker-entrypoint.sh            Up      8000/tcp
