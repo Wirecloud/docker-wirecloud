@@ -37,4 +37,5 @@ VOLUME /opt/wirecloud_instance
 EXPOSE 8000
 
 COPY ./docker-entrypoint.sh /
+COPY ./manage.py /usr/local/bin/
 ENTRYPOINT ["/docker-entrypoint.sh"]
