@@ -24,36 +24,13 @@ There are two types of images, the "standalone" images and the "composable" imag
 
 ## Standalone
 
-Running the standalone images are really simple. In the examples we are going to use the `latest` version but should work with `1.1`, `1.0` and `0.9` too.
-
-First, we need to get and run the image:
+Running the standalone images are really simple:
 
 ```
-docker run -d -p 80:80 --name wirecloud fiware/wirecloud:latest
+$ docker run --name some-wirecloud -d -p 80:80 fiware/wirecloud:latest
 ```
 
-Let's explain the command:
-- `docker`: The main docker binary.
-- `run`: To run the image.
-- `-d`: Detach the image.
-- `-p 80:80`: Assing the local port 80 to the image port 80. If you want to assign other port, for example, the port 8080, this would be: `-p 8080:80`
-- `--name wirecloud`: Give a static name to the image running, this will be useful later when we want to stop and start again the instance without loosing data. The name can be whatever you want.
-- `fiware/wirecloud:latest`: The name of the image.
-
-Now you can go to the browser and see `wirecloud` in the browser. If you used the port 80, just go to [http://localhost](http://localhost).
-
-If you want to stop/restart/start/admin the instance, just execute:
-
-```
-# Stop the instance
-docker stop wirecloud
-# Start the instance
-docker start wirecloud
-# Restart the instance
-docker restart wirecloud
-# Open a terminal on the instance
-docker -it wirecloud /bin/bash
-```
+This example uses the `latest` version, but it should work also with versions `1.1`, `1.0` and `0.9`. Those images includes `EXPOSE 80` (the http port) so them can be used directly to serve WireCloud. Remember that those images are not meant to be used on production that will require configuring HTTPS.
 
 ### Customizations
 
@@ -61,7 +38,7 @@ The standalone image uses a volume for `/opt/wirecloud_instance` (the path where
 
 If you want to use a different theme, you can create it on `/opt/wirecloud_instance`. See the [documentation](https://wirecloud.readthedocs.io/en/stable/development/platform/themes/) for more info.
 
-> **Note**: Rembember that any change made outside the defined volumes will be lost if the image is updated.
+> **Note**: Rembember that any change made outside the defined volume will be lost if the image is updated.
 
 ## Composable
 
@@ -169,36 +146,21 @@ http {
 }
 ```
 
-Once created the `docker-compose.yml` and the `nginx.conf` files, run the
-following command from the same folder for starting all the containers:
+Once created the `docker-compose.yml` and the `nginx.conf` files, run the following command from the same folder for starting all the containers:
 
 ```
 $ docker-compose up -d
 ```
 
-The `-d` flag start the services daemonized.
+This docker-compose configuration will detect when the WireCloud configuration is missing and, in that case, it will populate the volume at `/opt/wirecloud_instance` (mapped to the local `wirecloud_instance` folder), the database and the `/var/www/static` volume (mapped to the local `static` folder). This initial configuration will not include any administrator user so, please create one using the `createsuperuser` command.
 
-Now you have to initialize the database (PostgreSQL) by running the `initdb` command but, before running it, we have to obtain the container name assigned to the wirecloud service. This can be accomplished by running the `docker-compose ps` command:
 
-```
-$ docker-compose ps
-         Name                        Command               State           Ports
------------------------------------------------------------------------------------------
-hubdocs_nginx_1           /usr/sbin/nginx                  Up      0.0.0.0:80->80/tcp
-hubdocs_postgres_1        /docker-entrypoint.sh postgres   Up      0.0.0.0:5432->5432/tcp
-hubdocs_wirecloud_1       /docker-entrypoint.sh            Up      8000/tcp
-```
+### Running manage.py commands
 
-In this case, the container is called `hubdocs_wirecloud_1`, so we have to run the following command:
+You can run any available `manage.py` command by using `docker-compose exec manage.py`. For example, you can create superusers/administrators by running the following command:
 
 ```
-$ docker exec -it hubdocs_wirecloud_1 /docker-entrypoint.sh initdb
-```
-
-Once initalized the db, you have to create an administrator user:
-
-```
-$ docker exec -it hubdocs_wirecloud_1 /docker-entrypoint.sh createsuperuser
+$ docker-compose exec wirecloud manage.py createsuperuser
 Username (leave blank to use 'root'): admin
 Email address: ${youremail}
 Password: ${yourpassword}
@@ -206,7 +168,14 @@ Password (again): ${yourpassword}
 Superuser created successfully.
 ```
 
-Now your WireCloud instance is ready to be used! Open your browser and point it to your docker machine using `http://` (e.g. `http://192.168.99.100`).
+Regarding commands using the filesystem, take into account that those commands will be executed inside the container and thus the filesystem will be the one used by the container. The `manage.py` script will not check if those commands make changes outside the provided volumes. Anyway, they can be used without any problem. For example, static files can be collected using the following command:
+
+```
+$ docker-compose exec manage.py collectstatic
+```
+
+Use `docker-compose exec wirecloud manage.py --help` for getting the list of available commands.
+
 
 ### Customizations
 
@@ -214,16 +183,10 @@ The composable image uses two volumes, one for `/opt/wirecloud_instance` and ano
 
 > **Note**: Rembember that any change made outside the defined volumes will be lost if the image is updated.
 
-### Other useful commands
+Composable images comes preloaded with some python modules to allow enabling extra functionalities. Those modules are:
 
-- See the logs:
-
-        $ docker-compose logs
-
-
-- Connect to the docker PostgreSQL (replace the IP with yours):
-
-        $ psql -h 192.168.99.100 -p 5432 -U postgres --password
+- `python-social-auth`: Required to enable IdM configuration.
+- `pylibmc`: Required to use memcached.
 
 
 ## License
