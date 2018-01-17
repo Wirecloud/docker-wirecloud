@@ -41,7 +41,6 @@ if [ ! -f /opt/wirecloud_instance/wirecloud_instance/settings.py ]; then
 
     python manage.py migrate --fake-initial
     su wirecloud -c "python manage.py populate"
-    echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'admin@example.com', 'admin')" | python manage.py shell > /dev/null
 fi
 
 cd /opt/wirecloud_instance
