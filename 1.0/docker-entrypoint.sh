@@ -12,4 +12,6 @@ su wirecloud -c "python manage.py populate"
 
 # Start apache processes in foreground
 /usr/sbin/apache2ctl graceful-stop
+sleep 2
 exec /usr/sbin/apache2ctl -D FOREGROUND
+sleep 1
