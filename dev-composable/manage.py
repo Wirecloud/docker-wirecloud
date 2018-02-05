@@ -1,2 +1,4 @@
 #!/usr/bin/env bash
-su wirecloud -c "python manage.py $@"
+CMD="python manage.py $@"
+cd /opt/wirecloud_instance
+su wirecloud -c "${CMD}"

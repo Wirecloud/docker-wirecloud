@@ -2,8 +2,6 @@ FROM python:3-stretch
 
 MAINTAINER WireCloud Team <wirecloud@conwet.com>
 
-WORKDIR /opt
-
 RUN apt-get update; \
     apt-get install -y libmemcached-dev; \
     pip install social-auth-app-django "gunicorn==19.3.0" "psycopg2==2.6" pylibmc pysolr "elasticsearch==2.4.1"
@@ -17,7 +15,10 @@ RUN git clone --depth=1 https://github.com/Wirecloud/wirecloud.git; \
     rm -rf wirecloud
 
 RUN adduser --system --group --shell /bin/bash wirecloud; \
-    pip install channels asgi_ipc asgi_redis asgi_rabbitmq
+    pip install channels asgi_ipc asgi_redis asgi_rabbitmq; \
+    mkdir /opt/wirecloud_instance
+
+WORKDIR /opt/wirecloud_instance
 
 # volumes must be created after running the collectstatic command
 VOLUME /var/www/static
