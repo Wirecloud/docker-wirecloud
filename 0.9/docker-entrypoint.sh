@@ -10,4 +10,5 @@ python manage.py collectstatic --noinput
 
 # Start apache processes in foreground
 /usr/sbin/apache2ctl graceful-stop
+rm -f /var/run/apache2/apache2.pid
 exec /usr/sbin/apache2ctl -D FOREGROUND
