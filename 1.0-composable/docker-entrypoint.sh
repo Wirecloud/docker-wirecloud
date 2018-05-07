@@ -22,7 +22,6 @@ if [ ! -f /opt/wirecloud_instance/wirecloud_instance/settings.py ]; then
     # Use the target_directory parameter to indicate that we want to use that
     # directory even if it exit
     wirecloud-admin startproject wirecloud_instance wirecloud_instance
-    chown -R wirecloud:wirecloud wirecloud_instance; \
     chmod a+x wirecloud_instance/manage.py
 
     cd /opt/wirecloud_instance
@@ -37,10 +36,9 @@ if [ ! -f /opt/wirecloud_instance/wirecloud_instance/settings.py ]; then
     sed -i "s/STATIC_ROOT = path.join(BASEDIR, '..\/static')/STATIC_ROOT = '\/var\/www\/static'/g" wirecloud_instance/settings.py
 
     python manage.py collectstatic --noinput; \
-    chown -R wirecloud:wirecloud /var/www/static
 
     python manage.py migrate --fake-initial
-    su wirecloud -c "python manage.py populate"
+    python manage.py populate
 fi
 
 cd /opt/wirecloud_instance
@@ -49,7 +47,7 @@ cd /opt/wirecloud_instance
 case "$1" in
     initdb)
         python manage.py migrate --fake-initial
-        su wirecloud -c "python manage.py populate"
+        python manage.py populate
         ;;
     createdefaultsuperuser)
         echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'admin@example.com', 'admin')" | python manage.py shell > /dev/null
@@ -58,6 +56,6 @@ case "$1" in
         python manage.py createsuperuser
         ;;
     *)
-        su wirecloud -c "/usr/local/bin/gunicorn wirecloud_instance.wsgi:application -w 2 -b :8000"
+        /usr/local/bin/gunicorn wirecloud_instance.wsgi:application -w 2 -b :8000
         ;;
 esac
