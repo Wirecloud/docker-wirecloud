@@ -171,7 +171,7 @@ Superuser created successfully.
 Regarding commands using the filesystem, take into account that those commands will be executed inside the container and thus the filesystem will be the one used by the container. The `manage.py` script will not check if those commands make changes outside the provided volumes. Anyway, they can be used without any problem. For example, static files can be collected using the following command:
 
 ```
-$ docker-compose exec manage.py collectstatic
+$ docker-compose exec wirecloud manage.py collectstatic
 ```
 
 Use `docker-compose exec wirecloud manage.py --help` for getting the list of available commands.
