@@ -3,6 +3,7 @@ FROM python:3-stretch
 MAINTAINER WireCloud Team <wirecloud@conwet.com>
 
 ENV FORWARDED_ALLOW_IPS=*
+ENV DB_HOST=postgres
 
 RUN apt-get update; \
     apt-get install -y libmemcached-dev; \

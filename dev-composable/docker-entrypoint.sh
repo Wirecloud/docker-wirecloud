@@ -1,14 +1,14 @@
 #!/bin/bash
 
 # Wait DB to be accepting requests
-exec 8<>/dev/tcp/postgres/5432
+exec 8<>/dev/tcp/${DB_HOST}/5432
 DB_STATUS=$?
 
 i=0
 
 while [[ ${DB_STATUS} -ne 0 && ${i} -lt 50 ]]; do
     sleep 5
-    exec 8<>/dev/tcp/postgres/5432
+    exec 8<>/dev/tcp/${DB_HOST}/5432
     DB_STATUS=$?
 
     i=${i}+1
@@ -30,7 +30,7 @@ if [ ! -f /opt/wirecloud_instance/wirecloud_instance/settings.py ]; then
     sed -i "s/'NAME': ''/'NAME': 'postgres'/g" wirecloud_instance/settings.py; \
     sed -i "s/'USER': ''/'USER': 'postgres'/g" wirecloud_instance/settings.py; \
     sed -i "s/'PASSWORD': ''/'PASSWORD': 'postgres'/g" wirecloud_instance/settings.py; \
-    sed -i "s/'HOST': ''/'HOST': 'postgres'/g" wirecloud_instance/settings.py; \
+    sed -i "s/'HOST': ''/'HOST': os.environ.get(\"DB_HOST\", \"postgres\")/g" wirecloud_instance/settings.py; \
     sed -i "s/'PORT': ''/'PORT': '5432'/g" wirecloud_instance/settings.py; \
     sed -i "s/SECRET_KEY = '[^']\+'/SECRET_KEY = '$(python -c "from django.utils.crypto import get_random_string; import re; print(re.escape(get_random_string(50, 'abcdefghijklmnopqrstuvwxyz0123456789%^&*(-_=+)')))")'/g" wirecloud_instance/settings.py; \
     sed -i "s/STATIC_ROOT = path.join(BASEDIR, '..\/static')/STATIC_ROOT = '\/var\/www\/static'/g" wirecloud_instance/settings.py

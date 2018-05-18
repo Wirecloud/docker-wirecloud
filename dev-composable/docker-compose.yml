@@ -34,14 +34,11 @@ services:
     wirecloud:
         restart: always
         image: fiware/wirecloud:dev-composable
-        links:
-            - postgres:postgres
-            - elasticsearch:elasticsearch
         depends_on:
             - postgres
             - elasticsearch
-        ports:
-            - 127.0.0.1:8000:8000
+        environment:
+            - DB_HOST=postgres
         volumes:
             - ./wirecloud-instance:/opt/wirecloud_instance
             - ./wirecloud-static:/var/www/static
