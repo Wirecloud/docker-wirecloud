@@ -12,7 +12,7 @@ env:
 before_script:
     - cd ${VERSION}
     - cp ../hub-docs/docker-compose.yml ../hub-docs/nginx.conf .
-    - sed -i 's/latest-composable/${VERSION}-composable/' docker-compose.yml
+    - sed -i 's/latest-composable/${VERSION}/' docker-compose.yml
 
 script:
     - docker build -t fiware/wirecloud:${VERSION} .
