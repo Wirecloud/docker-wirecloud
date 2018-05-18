@@ -25,7 +25,7 @@ script:
     - curl -v http://localhost/api/version
 
 after_success:
-    - test $TRAVIS_PULL_REQUEST != "false" && docker login -u $DOCKER_USER -p $DOCKER_PASS && docker push fiware/wirecloud:${VERSION}
+    - test "$TRAVIS_BRANCH" = "master" && test "$TRAVIS_PULL_REQUEST" = "false" && docker login -u $DOCKER_USER -p $DOCKER_PASS && docker push fiware/wirecloud:${VERSION}
 
 branches:
     only:
