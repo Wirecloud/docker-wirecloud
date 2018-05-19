@@ -10,8 +10,10 @@ RUN apt update; \
 
 RUN pip install "wirecloud<1.1"
 
-RUN pip install channels asgi_ipc asgi_redis asgi_rabbitmq; \
+RUN adduser --system --group --shell /bin/bash wirecloud; \
+    pip install channels asgi_ipc asgi_redis asgi_rabbitmq; \
     wirecloud-admin startproject wirecloud_instance; \
+    chown -R wirecloud:wirecloud wirecloud_instance; \
     chmod a+x wirecloud_instance/manage.py
 
 WORKDIR /opt/wirecloud_instance
@@ -25,7 +27,8 @@ RUN sed -i "s/'ENGINE': 'django.db.backends.'/'ENGINE': 'django.db.backends.post
     sed -i "s/SECRET_KEY = '[^']\+'/SECRET_KEY = 'TOCHANGE_SECRET_KEY'/g" wirecloud_instance/settings.py; \
     sed -i "s/STATIC_ROOT = path.join(BASEDIR, '..\/static')/STATIC_ROOT = '\/var\/www\/static'/g" wirecloud_instance/settings.py
 
-RUN python manage.py collectstatic --noinput
+RUN python manage.py collectstatic --noinput; \
+    chown -R wirecloud:wirecloud /var/www/static
 
 # volumes must be created after running the collectstatic command
 VOLUME /var/www/static
