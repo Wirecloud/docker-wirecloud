@@ -150,7 +150,7 @@ This docker-compose configuration will detect when the WireCloud configuration i
 
 ### Running manage.py commands
 
-You can run any available `manage.py` command by using `docker-compose exec manage.py`. For example, you can create superusers/administrators by running the following command:
+You can run any available `manage.py` command by using `docker-compose exec wirecloud manage.py`. For example, you can create superusers/administrators by running the following command:
 
 ```
 $ docker-compose exec wirecloud manage.py createsuperuser
