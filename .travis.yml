@@ -12,6 +12,7 @@ env:
         - VERSION=0.9-composable
         - VERSION=1.0-composable
         - VERSION=1.1-composable
+        - VERSION=latest-composable
 
 before_script:
     - cd ${VERSION}
