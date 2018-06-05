@@ -17,7 +17,8 @@ RUN git clone --depth=1 https://github.com/Wirecloud/wirecloud.git; \
     cd ../.. \
     rm -rf wirecloud
 
-RUN pip install channels asgi_ipc asgi_redis asgi_rabbitmq; \
+RUN adduser --system --group --shell /bin/bash wirecloud; \
+    pip install channels asgi_ipc asgi_redis asgi_rabbitmq; \
     mkdir /opt/wirecloud_instance
 
 WORKDIR /opt/wirecloud_instance
