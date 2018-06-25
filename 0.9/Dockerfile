@@ -3,19 +3,20 @@ FROM python:2
 MAINTAINER WireCloud Team <wirecloud@conwet.com>
 
 # Install apache2, social-auth and create a wirecloud user
-RUN apt-get -y update; \
-    apt-get install -y apache2 libapache2-mod-wsgi; \
-    pip install "python-social-auth<0.3,>=0.2.2"; \
-    adduser --system --group --shell /bin/bash wirecloud
+RUN apt-get -y update && \
+    apt-get install -y apache2 libapache2-mod-wsgi && \
+    pip install --no-cache-dir "python-social-auth<0.3,>=0.2.2" && \
+    adduser --system --group --shell /bin/bash wirecloud && \
+    rm -rf /var/lib/apt/lists/*
 
 COPY ["apache-config.conf", "/etc/apache2/sites-enabled/000-default.conf"]
 
 WORKDIR /opt
 
 # Install WireCloud & dependencies
-RUN pip install "wirecloud<0.10.0"
+RUN pip install --no-cache-dir "wirecloud<0.10.0"
 
-RUN wirecloud-admin startproject wirecloud_instance --quick-start; \
+RUN wirecloud-admin startproject wirecloud_instance --quick-start && \
     chown -R wirecloud:wirecloud wirecloud_instance
 
 WORKDIR /opt/wirecloud_instance
