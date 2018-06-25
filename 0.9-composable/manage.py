@@ -1,2 +1,3 @@
 #!/usr/bin/env bash
-su wirecloud -c "python manage.py $@"
+cd /opt/wirecloud_instance
+gosu wirecloud python manage.py $@

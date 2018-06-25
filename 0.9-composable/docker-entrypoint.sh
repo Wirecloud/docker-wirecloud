@@ -43,7 +43,11 @@ if [ ! -f /opt/wirecloud_instance/wirecloud_instance/settings.py ]; then
     su wirecloud -c "python manage.py populate"
 fi
 
-cd /opt/wirecloud_instance
+# allow the container to be started with `--user`
+if [ "$(id -u)" = '0' ]; then
+	chown -R wirecloud .
+	chown -R wirecloud /var/www/static
+fi
 
 # Real entry point
 case "$1" in
