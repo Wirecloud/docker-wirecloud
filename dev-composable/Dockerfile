@@ -28,6 +28,7 @@ RUN apt-get update && \
 
 # Install WireCloud & dependencies
 RUN git clone --depth=1 https://github.com/Wirecloud/wirecloud.git && \
+    pip install "django<=1.11" && \
     cd wirecloud/src && \
     python setup.py bdist_wheel && \
     pip install --no-cache-dir dist/*.whl && \
