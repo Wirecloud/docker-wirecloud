@@ -19,9 +19,6 @@ services:
         image: postgres:latest
         volumes:
             - ./postgres-data:/var/lib/postgresql/data
-        ports:
-            - 127.0.0.1:5432:5432
-
 
     elasticsearch:
         restart: always
@@ -30,6 +27,10 @@ services:
             - ./elasticsearch-data:/usr/share/elasticsearch/data
         command: elasticsearch -Des.index.max_result_window=50000
 
+    memcached:
+        restart: always
+        image: memcached:1
+        command: memcached -m 2048m
 
     wirecloud:
         restart: always
@@ -37,8 +38,16 @@ services:
         depends_on:
             - postgres
             - elasticsearch
+            - memcached
         environment:
+            - DEBUG=True
             - DB_HOST=postgres
+            - FORWARDED_ALLOW_IPS=*
+            - ELASTICSEARCH2_URL=http://elasticsearch:9200/
+            - MEMCACHED_LOCATION=memcached:11211
+            - FIWARE_IDM_SERVER=${FIWARE_IDM_SERVER}
+            - SOCIAL_AUTH_FIWARE_KEY=${SOCIAL_AUTH_FIWARE_KEY}
+            - SOCIAL_AUTH_FIWARE_SECRET=${SOCIAL_AUTH_FIWARE_SECRET}
         volumes:
-            - ./wirecloud-instance:/opt/wirecloud_instance
+            - ./wirecloud-data:/opt/wirecloud_instance/data
             - ./wirecloud-static:/var/www/static
