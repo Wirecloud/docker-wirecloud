@@ -48,6 +48,7 @@ services:
             - FIWARE_IDM_SERVER=${FIWARE_IDM_SERVER}
             - SOCIAL_AUTH_FIWARE_KEY=${SOCIAL_AUTH_FIWARE_KEY}
             - SOCIAL_AUTH_FIWARE_SECRET=${SOCIAL_AUTH_FIWARE_SECRET}
+            - DEFAULT_THEME=wirecloud.defaulttheme
         volumes:
             - ./wirecloud-data:/opt/wirecloud_instance/data
             - ./wirecloud-static:/var/www/static

@@ -137,7 +137,7 @@ LOGIN_URL = reverse_lazy('login')
 LOGOUT_URL = reverse_lazy('wirecloud.root')
 LOGIN_REDIRECT_URL = reverse_lazy('wirecloud.root')
 
-THEME_ACTIVE = os.environ.get("WIRECLOUD_DEFAULT_THEME", "wirecloud.defaulttheme")
+THEME_ACTIVE = os.environ.get("DEFAULT_THEME", "wirecloud.defaulttheme")
 DEFAULT_LANGUAGE = 'browser'
 
 # WGT deployment dirs
