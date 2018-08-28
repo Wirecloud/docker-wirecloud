@@ -2,6 +2,7 @@ FROM python:3-stretch
 
 MAINTAINER WireCloud Team <wirecloud@conwet.com>
 
+ENV WIRECLOUD_DEFAULT_THEME=wirecloud.defaultheme
 ENV FORWARDED_ALLOW_IPS=*
 ENV DB_HOST=postgres
 ENV DB_PORT=5432
