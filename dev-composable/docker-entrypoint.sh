@@ -37,6 +37,6 @@ case "$1" in
         manage.py migrate --fake-initial
         manage.py populate
 
-        su wirecloud -c "/usr/local/bin/gunicorn wirecloud_instance.wsgi:application --forwarded-allow-ips "${FORWARDED-ALLOW-IPS}" -w 2 -b :8000"
+        su wirecloud -c "/usr/local/bin/gunicorn wirecloud_instance.wsgi:application --forwarded-allow-ips "${FORWARDED_ALLOW_IPS}" -w 2 -b :8000"
         ;;
 esac
