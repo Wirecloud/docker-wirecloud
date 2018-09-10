@@ -41,14 +41,15 @@ services:
             - memcached
         environment:
             - DEBUG=True
+            - DEFAULT_THEME=wirecloud.defaulttheme
             - DB_HOST=postgres
             - FORWARDED_ALLOW_IPS=*
             - ELASTICSEARCH2_URL=http://elasticsearch:9200/
             - MEMCACHED_LOCATION=memcached:11211
-            - FIWARE_IDM_SERVER=${FIWARE_IDM_SERVER}
-            - SOCIAL_AUTH_FIWARE_KEY=${SOCIAL_AUTH_FIWARE_KEY}
-            - SOCIAL_AUTH_FIWARE_SECRET=${SOCIAL_AUTH_FIWARE_SECRET}
-            - DEFAULT_THEME=wirecloud.defaulttheme
+            # Uncomment the following environment variables to enable IDM integration
+            #- FIWARE_IDM_SERVER=${FIWARE_IDM_SERVER}
+            #- SOCIAL_AUTH_FIWARE_KEY=${SOCIAL_AUTH_FIWARE_KEY}
+            #- SOCIAL_AUTH_FIWARE_SECRET=${SOCIAL_AUTH_FIWARE_SECRET}
         volumes:
             - ./wirecloud-data:/opt/wirecloud_instance/data
             - ./wirecloud-static:/var/www/static
