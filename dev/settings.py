@@ -26,9 +26,9 @@ if os.environ.get("DB_HOST", "").strip() != "":
             'NAME': os.environ.get("DB_NAME", "postgres"),
             'USER': os.environ.get("DB_USERNAME", "postgres"),
             'PASSWORD': os.environ.get("DB_PASSWORD", "postgres"),
-            'HOST': os.environ.get("DB_HOST", "postgres"),
+            'HOST': os.environ["DB_HOST"],
             'PORT': os.environ.get("DB_PORT", "5432"),
-        }
+        },
     }
 else:
     DATABASES = {
@@ -186,7 +186,6 @@ USE_X_FORWARDED_PORT = True
 if IDM_AUTH_ENABLED:
     AUTHENTICATION_BACKENDS = (
         'wirecloud.fiware.social_auth_backend.FIWAREOAuth2',
-        'django.contrib.auth.backends.ModelBackend',
     )
 else:
     AUTHENTICATION_BACKENDS = (
