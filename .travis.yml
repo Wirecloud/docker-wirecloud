@@ -28,6 +28,7 @@ script:
     - sudo /home/travis/virtualenv/python3.6/bin/python tests.py
 
 after_success:
+    - set +e
     - test "$TRAVIS_BRANCH" = "master" && test "$TRAVIS_PULL_REQUEST" = "false" && docker login -u $DOCKER_USER -p $DOCKER_PASS && docker push fiware/wirecloud:${VERSION}
 
 branches:
