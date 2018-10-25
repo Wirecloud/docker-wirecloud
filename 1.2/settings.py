@@ -18,17 +18,30 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-DATABASES = {
-    'default': {
-        # Only support postgres for now
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',       
-        'NAME': os.environ.get("DB_NAME", "postgres"),
-        'USER': os.environ.get("DB_USERNAME", "postgres"),
-        'PASSWORD': os.environ.get("DB_PASSWORD", "postgres"),
-        'HOST': os.environ.get("DB_HOST", "postgres"),
-        'PORT': os.environ.get("DB_PORT", "5432"),
+# We only support postgres and sqlite3 for now
+if os.environ.get("DB_HOST", "").strip() != "":
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': os.environ.get("DB_NAME", "postgres"),
+            'USER': os.environ.get("DB_USERNAME", "postgres"),
+            'PASSWORD': os.environ.get("DB_PASSWORD", "postgres"),
+            'HOST': os.environ["DB_HOST"],
+            'PORT': os.environ.get("DB_PORT", "5432"),
+        },
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(DATADIR, 'wirecloud.db'),
+            'USER': '',
+            'PASSWORD': '',
+            'HOST': '',
+            'PORT': '',
+        },
+    }
+
 
 if "ELASTICSEARCH2_URL" in os.environ:
     HAYSTACK_CONNECTIONS = {
@@ -173,7 +186,6 @@ USE_X_FORWARDED_PORT = True
 if IDM_AUTH_ENABLED:
     AUTHENTICATION_BACKENDS = (
         'wirecloud.fiware.social_auth_backend.FIWAREOAuth2',
-        'django.contrib.auth.backends.ModelBackend',
     )
 else:
     AUTHENTICATION_BACKENDS = (

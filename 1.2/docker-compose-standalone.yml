@@ -1,0 +1,14 @@
+version: "3"
+
+services:
+
+    wirecloud:
+        restart: always
+        image: fiware/wirecloud:1.2
+        ports:
+            - 80:8000
+        environment:
+            - DEBUG=True
+        volumes:
+            - ./wirecloud-data:/opt/wirecloud_instance/data
+            - ./wirecloud-static:/var/www/static

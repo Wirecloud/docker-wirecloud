@@ -4,7 +4,7 @@ MAINTAINER WireCloud Team <wirecloud@conwet.com>
 
 ENV DEFAULT_THEME=wirecloud.defaulttheme
 ENV FORWARDED_ALLOW_IPS=*
-ENV DB_HOST=postgres
+ENV DB_HOST=
 ENV DB_PORT=5432
 
 RUN apt-get update && \
@@ -29,13 +29,7 @@ RUN apt-get update && \
     gosu nobody true
 
 # Install WireCloud & dependencies
-RUN git clone --depth=1 https://github.com/Wirecloud/wirecloud.git && \
-    pip install "django<=1.11" && \
-    cd wirecloud/src && \
-    python setup.py bdist_wheel && \
-    pip install --no-cache-dir dist/*.whl && \
-    cd ../.. && \
-    rm -rf wirecloud
+RUN pip install --no-cache-dir "wirecloud<1.3"
 
 COPY ./docker-entrypoint.sh /
 COPY ./manage.py /usr/local/bin/

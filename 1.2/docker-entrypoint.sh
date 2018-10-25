@@ -1,18 +1,6 @@
 #!/bin/bash
 
-# Wait DB to be accepting requests
-exec 8<>/dev/tcp/${DB_HOST}/5432
-DB_STATUS=$?
-
-i=0
-
-while [[ ${DB_STATUS} -ne 0 && ${i} -lt 50 ]]; do
-    sleep 5
-    exec 8<>/dev/tcp/${DB_HOST}/${DB_PORT}
-    DB_STATUS=$?
-
-    i=${i}+1
-done
+set -e
 
 # allow the container to be started with `--user`
 if [ "$(id -u)" = '0' ]; then
