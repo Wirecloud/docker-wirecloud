@@ -24,7 +24,10 @@ case "$1" in
         manage.py collectstatic --noinput
         manage.py migrate --fake-initial
         manage.py populate
-
-        gosu wirecloud /usr/local/bin/gunicorn wirecloud_instance.wsgi:application --forwarded-allow-ips "${FORWARDED_ALLOW_IPS}" -w 2 -b :8000
-        ;;
+				if [ ! "$(id -u)" = '1042' ]; then
+        	gosu wirecloud /usr/local/bin/gunicorn wirecloud_instance.wsgi:application --forwarded-allow-ips "${FORWARDED_ALLOW_IPS}" -w 2 -b :8000
+				else
+					/usr/local/bin/gunicorn wirecloud_instance.wsgi:application --forwarded-allow-ips "${FORWARDED_ALLOW_IPS}" -w 2 -b :8000
+				fi	
+				;;
 esac
