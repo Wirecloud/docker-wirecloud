@@ -2,6 +2,8 @@
 
 set -e
 
+echo "In docker-entrypoint"
+echo "We are running a user: $(id -u)"
 # allow the container to be started with `--user`
 if [ "$(id -u)" = '0' ]; then
 	chown -R wirecloud .
@@ -21,13 +23,16 @@ case "$1" in
         manage.py createsuperuser
         ;;
     *)
+		    echo "Default Case:"
+				echo "Current User: $(id -u)"
         manage.py collectstatic --noinput
         manage.py migrate --fake-initial
         manage.py populate
-				if [ ! "$(id -u)" = '1042' ]; then
-        	gosu wirecloud /usr/local/bin/gunicorn wirecloud_instance.wsgi:application --forwarded-allow-ips "${FORWARDED_ALLOW_IPS}" -w 2 -b :8000
+				echo "About to start"
+				if [ "$(id -u)" = '1042' ]; then
+        	wirecloud /usr/local/bin/gunicorn wirecloud_instance.wsgi:application --forwarded-allow-ips "${FORWARDED_ALLOW_IPS}" -w 2 -b :8000
 				else
-					/usr/local/bin/gunicorn wirecloud_instance.wsgi:application --forwarded-allow-ips "${FORWARDED_ALLOW_IPS}" -w 2 -b :8000
-				fi	
+					gosu wirecloud /usr/local/bin/gunicorn wirecloud_instance.wsgi:application --forwarded-allow-ips "${FORWARDED_ALLOW_IPS}" -w 2 -b :8000
+				fi
 				;;
 esac
