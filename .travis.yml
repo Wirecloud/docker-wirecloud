@@ -23,6 +23,7 @@ before_script:
 script:
     - set -e
     - docker build -t fiware/wirecloud:${VERSION} .
+    - test "${VERSION}" = "latest" && sed -ri "s|fiware/wirecloud:1.2|fiware/wirecloud:latest|g" docker-compose*.yml || true
     # We need to run this using sudo to be able to remove some files created by
     # docker
     - sudo /home/travis/virtualenv/python3.6/bin/python tests.py
