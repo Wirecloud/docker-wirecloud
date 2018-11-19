@@ -4,7 +4,7 @@ set -e
 
 # allow the container to be started with `--user`
 if [ "$(id -u)" = '0' ]; then
-	chown -R wirecloud .
+	chown -R wirecloud data
 	chown -R wirecloud /var/www/static
 fi
 
