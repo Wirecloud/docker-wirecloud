@@ -35,6 +35,14 @@ class WireCloudTests(object):
         response = requests.get("http://localhost/static/theme/wirecloud.defaulttheme/images/logos/header.png")
         self.assertEqual(response.status_code, 200)
 
+    def test_should_serve_translations(self):
+        response = requests.get("http://localhost/api/i18n/js_catalogue?language=es")
+        self.assertEqual(response.status_code, 200)
+        # Look for basic translations
+        self.assertIn('"Yes"', response.text)
+        self.assertIn('"No"', response.text)
+        self.assertIn('"Warning"', response.text)
+
 
 class StandaloneTests(unittest.TestCase, WireCloudTests):
 

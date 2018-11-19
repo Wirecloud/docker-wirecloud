@@ -29,12 +29,15 @@ RUN apt-get update && \
 
 # Install WireCloud & dependencies
 RUN git clone --depth=1 https://github.com/Wirecloud/wirecloud.git && \
+    apt-get update && apt-get install -y gettext && \
     pip install "django<=1.11" && \
     cd wirecloud/src && \
     python setup.py bdist_wheel && \
     pip install --no-cache-dir dist/*.whl && \
     cd ../.. && \
-    rm -rf wirecloud
+    rm -rf wirecloud && \
+    apt-get remove -y gettext && \
+    rm -rf /var/lib/apt/lists/*
 
 COPY ./docker-entrypoint.sh /
 COPY ./manage.py /usr/local/bin/
