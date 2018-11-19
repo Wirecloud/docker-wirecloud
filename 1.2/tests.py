@@ -12,6 +12,30 @@ from urllib.parse import parse_qs, urlparse
 import requests
 import sh
 
+POLL_FREQUENCY = 0.5  # How long to sleep inbetween calls to the method
+
+
+class TimeoutException(Exception):
+    """
+    Thrown when a command does not complete in enough time.
+    """
+    pass
+
+
+def wait_until_running(timeout=120):
+    end_time = time.time() + timeout
+    while True:
+        try:
+            response = requests.get("http://localhost/api/version")
+            if response.status_code != 502:
+                return
+        except requests.exceptions.ConnectionError:
+            pass
+        time.sleep(POLL_FREQUENCY)
+        if time.time() > end_time:
+            break
+    raise TimeoutException()
+
 
 class WireCloudTests(object):
 
@@ -48,11 +72,12 @@ class StandaloneTests(unittest.TestCase, WireCloudTests):
 
     @classmethod
     def setUpClass(cls):
+        print("\n################################################################################\n")
         print("#")
         print("# Initializing standalone test case")
         print("#\n")
         sh.docker_compose("-f", "docker-compose-standalone.yml", "up", d=True, remove_orphans=True, _fg=True)
-        time.sleep(30)
+        wait_until_running()
         print()
 
     @classmethod
@@ -71,11 +96,12 @@ class SimpleTests(unittest.TestCase, WireCloudTests):
 
     @classmethod
     def setUpClass(cls):
+        print("\n################################################################################\n")
         print("#")
         print("# Initializing simple test case")
         print("#\n")
         sh.docker_compose("-f", "docker-compose-simple.yml", "up", d=True, remove_orphans=True, _fg=True)
-        time.sleep(30)
+        wait_until_running()
         print()
 
     @classmethod
@@ -94,11 +120,39 @@ class ComposedTests(unittest.TestCase, WireCloudTests):
 
     @classmethod
     def setUpClass(cls):
+        print("\n################################################################################\n")
         print("#")
         print("# Initializing composed test case")
         print("#\n")
         sh.docker_compose.up(d=True, remove_orphans=True, _fg=True)
-        time.sleep(30)
+        wait_until_running()
+        print()
+
+    @classmethod
+    def tearDownClass(cls):
+        print()
+        print("#")
+        print("# Removing containers and volumes")
+        print("#\n")
+        sh.docker_compose.down(remove_orphans=True, v=True, _fg=True)
+        shutil.rmtree('wirecloud-data')
+        shutil.rmtree('wirecloud-static')
+        shutil.rmtree('elasticsearch-data')
+        shutil.rmtree('postgres-data')
+        print()
+
+
+class ReadOnlyConfigTests(unittest.TestCase, WireCloudTests):
+
+    @classmethod
+    def setUpClass(cls):
+        print("\n################################################################################\n")
+        print("#")
+        print("# Initializing read-only config test case")
+        print("#\n")
+
+        sh.docker_compose("-f", "docker-compose-config-file.yml", "up", d=True, remove_orphans=True, _fg=True)
+        wait_until_running()
         print()
 
     @classmethod
@@ -119,6 +173,7 @@ class IDMTests(unittest.TestCase, WireCloudTests):
 
     @classmethod
     def setUpClass(cls):
+        print("\n################################################################################\n")
         print("#")
         print("# Initializing idm test case")
         print("#\n")
@@ -129,7 +184,7 @@ class IDMTests(unittest.TestCase, WireCloudTests):
         env["SOCIAL_AUTH_FIWARE_KEY"] = "wirecloud_test_client_id"
         env["SOCIAL_AUTH_FIWARE_SECRET"] = "notused"
         sh.docker_compose("-f", "docker-compose-idm.yml", "up", d=True, remove_orphans=True, _env=env, _fg=True)
-        time.sleep(45)
+        wait_until_running()
         print()
 
     @classmethod
