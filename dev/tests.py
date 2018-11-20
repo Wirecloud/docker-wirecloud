@@ -3,6 +3,8 @@
 
 # Copyright (c) 2018 Future Internet Consulting and Development Solutions S.L.
 
+import grp
+import pwd
 import os
 import shutil
 import time
@@ -210,6 +212,42 @@ class IDMTests(unittest.TestCase, WireCloudTests):
         parameters = parse_qs(location.query)
         self.assertEqual(parameters['client_id'], ['wirecloud_test_client_id'])
         self.assertEqual(parameters['redirect_uri'], ['http://localhost/complete/fiware/'])
+
+
+class CustomUserTests(unittest.TestCase, WireCloudTests):
+
+    @classmethod
+    def setUpClass(cls):
+        print("\n################################################################################\n")
+        print("#")
+        print("# Initializing custom user test case")
+        print("#\n")
+
+        sh.adduser("mycustomuser", system=True, group=True, shell="/bin/bash")
+        uid = pwd.getpwnam("mycustomuser").pw_uid
+        gid = grp.getgrnam("mycustomuser").gr_gid
+        os.mkdir('wirecloud-data', 0o700)
+        os.chown('wirecloud-data', uid, gid)
+        os.mkdir('wirecloud-static', 0o700)
+        os.chown('wirecloud-static', uid, gid)
+
+        env = {}
+        env.update(os.environ)
+        env["WIRECLOUD_USER"] = "{}".format(uid)
+        sh.docker_compose("-f", "docker-compose-custom-user.yml", "up", d=True, remove_orphans=True, _env=env, _fg=True)
+        wait_until_running()
+        print()
+
+    @classmethod
+    def tearDownClass(cls):
+        print()
+        print("#")
+        print("# Removing containers and volumes")
+        print("#\n")
+        sh.docker_compose.down(remove_orphans=True, v=True, _fg=True)
+        shutil.rmtree('wirecloud-data')
+        shutil.rmtree('wirecloud-static')
+        print()
 
 
 if __name__ == "__main__":
