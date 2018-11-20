@@ -27,12 +27,16 @@ The following environment variables are also honored for configuring your WireCl
 
 - `-e DEBUG=...` (defaults to "False", use "True" for running WireCloud in debug
     mode. Debug mode should be enabled for running WireCloud in standalone mode)
+- `-e ALLOWED_HOSTS=...` (defaults to "*", whitespace whitespace-separated list
+    of allowed hosts. See [django documentation][ALLOWED_HOSTS] for more
+    details)
 - `-e DEFAULT_THEME=...` (defaults to "wirecloud.defaulttheme")
 - `-e DB_HOST=...` (defaults to nothing, provide a host value to connect this
     image with a DB server)
 - `-e DB_NAME=...` (defaults to "postgres")
 - `-e DB_USERNAME=...` (defaults to "postgres")
 - `-e DB_PASSWORD=...` (defaults to "postgres")
+- `-e DB_PORT=...` (defaults to "5432")
 - `-e FORWARDED_ALLOW_IPS=...` (defaults to "*", set this to provide a list of
     trusted reverse proxies)
 - `-e ELASTICSEARCH2_URL=...` (defaults to nothing, leave it empty to use Whoosh
@@ -49,6 +53,9 @@ When running WireCloud with TLS behind a reverse proxy such as Apache/NGINX
 which is responsible for doing TLS termination, be sure to set
 the `X-Forwarded-Proto`, `X-Forwarded-Host` and `X-Forwarded-Port` headers
 appropriately.
+
+
+[ALLOWED_HOSTS]: https://docs.djangoproject.com/en/2.1/ref/settings/#allowed-hosts
 
 
 ## Running manage.py commands
