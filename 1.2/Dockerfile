@@ -6,6 +6,7 @@ ENV DEFAULT_THEME=wirecloud.defaulttheme
 ENV FORWARDED_ALLOW_IPS=*
 ENV DB_HOST=
 ENV DB_PORT=5432
+ENV LOGLEVEL=info
 
 RUN apt-get update && \
     apt-get install -y libmemcached-dev gosu && \

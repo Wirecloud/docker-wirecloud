@@ -1,4 +1,3 @@
-
 ARG PYTHON_VERSION=3.6-stretch
 FROM python:${PYTHON_VERSION}
 
@@ -17,7 +16,8 @@ MAINTAINER WireCloud Team <wirecloud@conwet.com>
 
 ENV DEFAULT_THEME=wirecloud.defaulttheme \
     FORWARDED_ALLOW_IPS=* \
-    DB_PORT=5432 
+    DB_PORT=5432 \
+    LOGLEVEL=info
 
 RUN apt-get update && \
     apt-get install -y libmemcached-dev gosu && \
