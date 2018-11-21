@@ -39,13 +39,15 @@ RUN git clone --depth=1 https://github.com/Wirecloud/wirecloud.git && \
 COPY ./docker-entrypoint.sh /
 COPY ./manage.py /usr/local/bin/
 
-RUN groupadd --gid 142 wirecloud && adduser --uid 1042 --gid 142 --system --shell /bin/bash wirecloud && \
+RUN adduser --system --group --shell /bin/bash wirecloud && \
     pip install --no-cache-dir channels asgi_ipc asgi_redis asgi_rabbitmq && \
     mkdir -p /opt/wirecloud_instance /var/www/static && \
     cd /opt && \
     wirecloud-admin startproject wirecloud_instance wirecloud_instance && \
     chown -R wirecloud:wirecloud wirecloud_instance /var/www/static && \
     chmod a+x wirecloud_instance/manage.py
+
+USER wirecloud
 
 COPY ./settings.py ./urls.py /opt/wirecloud_instance/wirecloud_instance/
 

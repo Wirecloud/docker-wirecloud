@@ -193,3 +193,5 @@ else:
     )
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 262144000
+
+FORCE_PORT = int(os.environ.get("FORCE_PORT", "")) if os.environ.get("FORCE_PORT", "").strip() != "" else 80
