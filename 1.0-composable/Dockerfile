@@ -5,24 +5,9 @@ MAINTAINER WireCloud Team <wirecloud@conwet.com>
 WORKDIR /opt
 
 RUN apt update && \
-    apt install -y libmemcached-dev && \
+    apt install -y libmemcached-dev gosu && \
     pip install --no-cache-dir "python-social-auth<0.3,>=0.2.2" "gunicorn==19.3.0" "psycopg2==2.6" pylibmc && \
     rm -rf /var/lib/apt/lists/* && \
-    \
-    export dpkgArch="$(dpkg --print-architecture | awk -F- '{ print $NF }')" && \
-    wget -O /usr/local/bin/gosu "https://github.com/tianon/gosu/releases/download/1.10/gosu-$dpkgArch" && \
-    wget -O /usr/local/bin/gosu.asc "https://github.com/tianon/gosu/releases/download/1.10/gosu-$dpkgArch.asc" && \
-    export GNUPGHOME="$(mktemp -d)" && \
-    for server in $(shuf -e ha.pool.sks-keyservers.net \
-                            hkp://p80.pool.sks-keyservers.net:80 \
-                            keyserver.ubuntu.com \
-                            hkp://keyserver.ubuntu.com:80 \
-                            pgp.mit.edu) ; do \
-        gpg --batch --keyserver "$server" --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 && break || : ; \
-    done && \
-    gpg --batch --verify /usr/local/bin/gosu.asc /usr/local/bin/gosu && \
-    rm -r "$GNUPGHOME" /usr/local/bin/gosu.asc && \
-    chmod +x /usr/local/bin/gosu && \
     gosu nobody true
 
 RUN pip install --no-cache-dir "wirecloud<1.1"
