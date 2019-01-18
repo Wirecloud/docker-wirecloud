@@ -25,6 +25,11 @@ case "$1" in
         manage.py migrate --fake-initial
         manage.py populate
 
-        gosu wirecloud /usr/local/bin/gunicorn wirecloud_instance.wsgi:application --forwarded-allow-ips "${FORWARDED_ALLOW_IPS}" -w 2 -b :8000
+        # allow the container to be started with `--user`
+        if [ "$(id -u)" = '0' ]; then
+            gosu wirecloud /usr/local/bin/gunicorn wirecloud_instance.wsgi:application --forwarded-allow-ips "${FORWARDED_ALLOW_IPS}" -w 2 -b :8000
+        else
+            /usr/local/bin/gunicorn wirecloud_instance.wsgi:application --forwarded-allow-ips "${FORWARDED_ALLOW_IPS}" -w 2 -b :8000
+        fi
         ;;
 esac
