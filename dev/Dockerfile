@@ -4,7 +4,7 @@ FROM python:${PYTHON_VERSION}
 
 ARG GITHUB_ACCOUNT=Wirecloud
 ARG GITHUB_REPOSITORY=wirecloud
-ARG SOURCE_BRANCH=master
+ARG SOURCE_BRANCH=develop
 
 # Copying Build time arguments to environment variables so they are persisted at run time and can be 
 # inspected within a running container.
