@@ -1,10 +1,23 @@
-FROM python:3.6-stretch
+
+ARG PYTHON_VERSION=3.6-stretch
+FROM python:${PYTHON_VERSION}
+
+ARG GITHUB_ACCOUNT=Wirecloud
+ARG GITHUB_REPOSITORY=wirecloud
+ARG SOURCE_BRANCH=develop
+
+# Copying Build time arguments to environment variables so they are persisted at run time and can be 
+# inspected within a running container.
+# see: https://vsupalov.com/docker-build-time-env-values/  for a deeper explanation.
+
+ENV GITHUB_ACCOUNT=${GITHUB_ACCOUNT} \
+    GITHUB_REPOSITORY=${GITHUB_REPOSITORY}
 
 MAINTAINER WireCloud Team <wirecloud@conwet.com>
 
-ENV DEFAULT_THEME=wirecloud.defaulttheme
-ENV FORWARDED_ALLOW_IPS=*
-ENV DB_PORT=5432
+ENV DEFAULT_THEME=wirecloud.defaulttheme \
+    FORWARDED_ALLOW_IPS=* \
+    DB_PORT=5432 
 
 RUN apt-get update && \
     apt-get install -y libmemcached-dev gosu && \
@@ -13,14 +26,14 @@ RUN apt-get update && \
     gosu nobody true
 
 # Install WireCloud & dependencies
-RUN git clone --depth=1 https://github.com/Wirecloud/wirecloud.git && \
+RUN git clone -b "${SOURCE_BRANCH}" --depth=1  --single-branch https://github.com/"${GITHUB_ACCOUNT}"/"${GITHUB_REPOSITORY}".git && \
     apt-get update && apt-get install -y gettext && \
     pip install "django<=1.11" && \
-    cd wirecloud/src && \
+    cd "${GITHUB_REPOSITORY}"/src && \
     python setup.py bdist_wheel && \
     pip install --no-cache-dir dist/*.whl && \
     cd ../.. && \
-    rm -rf wirecloud && \
+    rm -rf "${GITHUB_REPOSITORY}" && \
     apt-get remove -y gettext && \
     rm -rf /var/lib/apt/lists/*
 
@@ -45,7 +58,7 @@ VOLUME /opt/wirecloud_instance/data
 
 EXPOSE 8000
 
-HEALTHCHECK CMD --interval=3s \
+HEALTHCHECK --interval=3s \
 	CMD curl --fail http://localhost:8000/api/features || exit 1
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
