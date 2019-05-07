@@ -61,6 +61,25 @@ appropriately.
 [ALLOWED_HOSTS]: https://docs.djangoproject.com/en/2.1/ref/settings/#allowed-hosts
 
 
+### Docker Secrets
+
+As an alternative to passing sensitive information via environment variables, `_FILE` may be appended to some sensitive
+environment variables, causing the initialization script to load the values for those variables from files present in
+the container. In particular, this can be used to load passwords from Docker secrets stored in
+`/run/secrets/<secret_name>` files. For example:
+
+```console
+docker run --name wirecloud -e DB_PASSWORD_FILE=/run/secrets/password -d fiware/wirecloud
+```
+
+Currently, this `_FILE` suffix is supported for:
+
+-  `DB_PASSWORD`
+-  `DB_USERNAME`
+-  `SOCIAL_AUTH_FIWARE_KEY`
+-  `SOCIAL_AUTH_FIWARE_SECRET`
+
+
 ## Running manage.py commands
 
 You can run any available `manage.py` command by using `docker exec -ti some-wirecloud manage.py ...`. For example, you can create superusers/administrators by running the following command:
@@ -208,6 +227,7 @@ http {
 Run `docker stack deploy -c docker-compose.yml wirecloud` (or `docker-compose -f docker-compose.yml up`), wait for it to initialize completely, and visit `http://swarm-ip`, `http://localhost`, or `http://host-ip` (as appropriate). Also, take into account that you should configure https to have a production-ready deployment of WireCloud (not covered by this example).
 
 
+
 ## Customizations
 
 If you want to customize your WireCloud installation, the best option is to create a new docker image by extending one of the official images and installing new modules. For example, you can follow the following [tutorial](https://wirecloud.readthedocs.io/en/stable/development/platform/themes/) for creating a custom theme and install it on the extended image and use the `DEFAULT_THEME` environment variable to configure it as the default theme.
@@ -329,25 +349,6 @@ $ docker-compose up -d
 ```
 
 This docker-compose configuration will detect when the WireCloud configuration is missing and, in that case, it will populate the volume at `/opt/wirecloud_instance` (mapped to the local `wirecloud_instance` folder), the database and the `/var/www/static` volume (mapped to the local `static` folder). This initial configuration will not include any administrator user so, please create one using the `createsuperuser` command.
-
-### Docker Secrets
-
-As an alternative to passing sensitive information via environment variables, `_FILE` may be appended to some sensitive
-environment variables, causing the initialization script to load the values for those variables from files present in
-the container. In particular, this can be used to load passwords from Docker secrets stored in
-`/run/secrets/<secret_name>` files. For example:
-
-```console
-docker run --name wirecloud -e DB_PASSWORD_FILE=/run/secrets/password -d fiware/wirecloud
-```
-
-Currently, this `_FILE` suffix is supported for:
-
--  `DB_PASSWORD`
--  `DB_USERNAME`
--  `SOCIAL_AUTH_FIWARE_KEY`
--  `SOCIAL_AUTH_FIWARE_SECRET`
-
 
 # License
 
