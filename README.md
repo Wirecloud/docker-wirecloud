@@ -10,9 +10,12 @@
 
 # What is WireCloud?
 
+[![](https://nexus.lab.fiware.org/repository/raw/public/badges/chapters/visualization.svg)](https://www.fiware.org/developers/catalogue/)
+[![Support badge](https://img.shields.io/badge/tag-fiware--wirecloud-orange.svg?logo=stackoverflow)](https://stackoverflow.com/questions/tagged/fiware-wirecloud)
+
 WireCloud builds on cutting-edge end-user development, RIA and semantic technologies to offer a next-generation end-user centred web application mashup platform aimed at leveraging the long tail of the Internet of Services. WireCloud builds on cutting-edge end-user (software) development, RIA and semantic technologies to offer a next-generation end-user centred web application mashup platform aimed at allowing end users without programming skills to easily create web applications and dashboards/cockpits (e.g. to visualize their data of interest or to control their domotized home or environment). Web application mashups integrate heterogeneous data, application logic, and UI components (widgets) sourced from the Web to create new coherent and value-adding composite applications. They are targeted at leveraging the "long tail" of the Web of Services (a.k.a. the Programmable Web) by exploiting rapid development, DIY, and shareability. They typically serve a specific situational (i.e. immediate, short-lived, customized) need, frequently with high potential for reuse. Is this "situational" character which precludes them to be offered as 'off-the-shelf' functionality by solution providers, and therefore creates the need for a tool like WireCloud
 
-WireCloud is part of [FIWARE](https://www.fiware.org/). Check it out in the [Catalogue](https://catalogue.fiware.org/enablers/application-mashup-wirecloud)
+WireCloud is part of [FIWARE](https://www.fiware.org/). Check it out in the [Catalogue](https://www.fiware.org/developers/catalogue/)
 
 [![WireCloud's logo](https://raw.githubusercontent.com/Wirecloud/docker-wirecloud/master/logo.png)](https://github.com/Wirecloud/wirecloud)
 
@@ -326,6 +329,24 @@ $ docker-compose up -d
 ```
 
 This docker-compose configuration will detect when the WireCloud configuration is missing and, in that case, it will populate the volume at `/opt/wirecloud_instance` (mapped to the local `wirecloud_instance` folder), the database and the `/var/www/static` volume (mapped to the local `static` folder). This initial configuration will not include any administrator user so, please create one using the `createsuperuser` command.
+
+### Docker Secrets
+
+As an alternative to passing sensitive information via environment variables, `_FILE` may be appended to some sensitive
+environment variables, causing the initialization script to load the values for those variables from files present in
+the container. In particular, this can be used to load passwords from Docker secrets stored in
+`/run/secrets/<secret_name>` files. For example:
+
+```console
+docker run --name wirecloud -e DB_PASSWORD_FILE=/run/secrets/password -d fiware/wirecloud
+```
+
+Currently, this `_FILE` suffix is supported for:
+
+-  `DB_PASSWORD`
+-  `DB_USERNAME`
+-  `SOCIAL_AUTH_FIWARE_KEY`
+-  `SOCIAL_AUTH_FIWARE_SECRET`
 
 
 # License
