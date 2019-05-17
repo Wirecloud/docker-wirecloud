@@ -30,6 +30,7 @@ The following environment variables are also honored for configuring your WireCl
 
 - `-e DEBUG=...` (defaults to "False", use "True" for running WireCloud in debug
     mode. Debug mode should be enabled for running WireCloud in standalone mode)
+- `-e LOGLEVEL=...` (defaults to "INFO")
 - `-e ALLOWED_HOSTS=...` (defaults to "*", whitespace whitespace-separated list
     of allowed hosts. See [django documentation][ALLOWED_HOSTS] for more
     details)
