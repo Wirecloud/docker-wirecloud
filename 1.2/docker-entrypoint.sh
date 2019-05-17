@@ -27,9 +27,19 @@ case "$1" in
 
         # allow the container to be started with `--user`
         if [ "$(id -u)" = '0' ]; then
-            gosu wirecloud /usr/local/bin/gunicorn wirecloud_instance.wsgi:application --forwarded-allow-ips "${FORWARDED_ALLOW_IPS}" -w 2 -b :8000
+            exec gosu wirecloud /usr/local/bin/gunicorn wirecloud_instance.wsgi:application \
+                --forwarded-allow-ips "${FORWARDED_ALLOW_IPS}" \
+                --workers 2 \
+                --bind 0.0.0.0:8000 \
+                --log-file - \
+                --log-level ${LOGLEVEL}
         else
-            /usr/local/bin/gunicorn wirecloud_instance.wsgi:application --forwarded-allow-ips "${FORWARDED_ALLOW_IPS}" -w 2 -b :8000
+            exec /usr/local/bin/gunicorn wirecloud_instance.wsgi:application \
+                --forwarded-allow-ips "${FORWARDED_ALLOW_IPS}" \
+                --workers 2 \
+                --bind 0.0.0.0:8000 \
+                --log-file - \
+                --log-level ${LOGLEVEL}
         fi
         ;;
 esac

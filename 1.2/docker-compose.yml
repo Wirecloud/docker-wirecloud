@@ -46,6 +46,7 @@ services:
             - memcached
         environment:
             - DEBUG=False
+            - LOGLEVEL=INFO
             # - DEFAULT_THEME=wirecloud.defaulttheme
             - DB_HOST=postgres
             - DB_PASSWORD=wirepass   # Change this password!
