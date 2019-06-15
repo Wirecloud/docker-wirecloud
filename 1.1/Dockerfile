@@ -30,6 +30,7 @@ WORKDIR /opt/wirecloud_instance
 EXPOSE 80
 
 HEALTHCHECK --interval=3s \
+    --start-period=40s \
 	CMD curl --fail http://localhost:80/api/features || exit 1
 
 COPY ./docker-entrypoint.sh /
