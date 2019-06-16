@@ -49,6 +49,9 @@ The following environment variables are also honored for configuring your WireCl
 - `-e FIWARE_IDM_SERVER=...` (defaults to nothing, leave it empty for
     authenticating users using the credentials stored on the WireCloud
     database.)
+- `-e FIWARE_IDM_PUBLIC_URL=...` (defaults to nothing, leave it empty for using
+    the `FIWARE_IDM_SERVER` configuration for building the url when redirecting
+    the browser to the IdM portal)
 - `-e SOCIAL_AUTH_FIWARE_KEY=...` (defaults to nothing)
 - `-e SOCIAL_AUTH_FIWARE_SECRET=...` (defaults to nothing)
 
@@ -233,7 +236,7 @@ Run `docker stack deploy -c docker-compose.yml wirecloud` (or `docker-compose -f
 If you want to customize your WireCloud installation, the best option is to create a new docker image by extending one of the official images and installing new modules. For example, you can follow the following [tutorial](https://wirecloud.readthedocs.io/en/stable/development/platform/themes/) for creating a custom theme and install it on the extended image and use the `DEFAULT_THEME` environment variable to configure it as the default theme.
 
 
-# Using previous versions (WireCloud v1.1 and below)
+# Using previous versions (WireCloud v1.1)
 
 WireCloud v1.1 and below uses two images, the "standalone" images and the "composable" images. The standalone images comes with everything ready to run WireCloud directly by running the image and without having to configure it (no recommended for production). The composable images are designed to work with other services running on other containers (e.g. using `docker-compose` or docker swarm) supporting a more flexible configuration scheme.
 
@@ -246,7 +249,7 @@ Running the standalone images are really simple:
 $ docker run --name some-wirecloud -d -p 80:80 fiware/wirecloud:1.1
 ```
 
-This example uses the `1.1` version, but it should work also with versions `1.0`. Those images includes `EXPOSE 80` (the http port) so them can be used directly to serve WireCloud. In any case, those images are not meant to be used on production that will require, at least, configuring HTTPS.
+This example uses the `1.1` version. Those images includes `EXPOSE 80` (the http port) so them can be used directly to serve WireCloud. In any case, those images are not meant to be used on production that will require, at least, configuring HTTPS.
 
 
 ## Composable
