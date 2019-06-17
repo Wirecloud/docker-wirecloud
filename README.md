@@ -34,6 +34,8 @@ The following environment variables are also honored for configuring your WireCl
 - `-e ALLOWED_HOSTS=...` (defaults to "*", whitespace whitespace-separated list
     of allowed hosts. See [django documentation][ALLOWED_HOSTS] for more
     details)
+- `-e DEFAULT_LANGUAGE=...` (defaults to "browser", see
+    [documentation][DEFAULT_LANGUAGE] for more details)
 - `-e DEFAULT_THEME=...` (defaults to "wirecloud.defaulttheme")
 - `-e DB_HOST=...` (defaults to nothing, provide a host value to connect this
     image with a DB server)
@@ -45,6 +47,8 @@ The following environment variables are also honored for configuring your WireCl
     trusted reverse proxies)
 - `-e ELASTICSEARCH2_URL=...` (defaults to nothing, leave it empty to use Whoosh
     instead).
+- `-e LANGUAGE_CODE=...` (defaults to "en-gb", See [django
+    documentation][LANGUAGE_CODE] for more details)
 - `-e MEMCACHED_LOCATION=...` (defaults to nothing, leave it empty to disable
     memcached support)
 - `-e FIWARE_IDM_SERVER=...` (defaults to nothing, leave it empty for
@@ -60,6 +64,8 @@ appropriately.
 
 
 [ALLOWED_HOSTS]: https://docs.djangoproject.com/en/2.1/ref/settings/#allowed-hosts
+[DEFAULT_LANGUAGE]: https://wirecloud.readthedocs.io/en/stable/installation_guide/#default_language
+[LANGUAGE_CODE]: https://docs.djangoproject.com/en/2.1/ref/settings/#language-code
 
 
 ### Docker Secrets
