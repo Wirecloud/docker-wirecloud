@@ -71,7 +71,7 @@ TIME_ZONE = 'America/Chicago'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = os.environ.get('LANGUAGE_CODE', 'en-us')
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
@@ -152,7 +152,15 @@ LOGOUT_URL = reverse_lazy('wirecloud.root')
 LOGIN_REDIRECT_URL = reverse_lazy('wirecloud.root')
 
 THEME_ACTIVE = os.environ.get("DEFAULT_THEME", "wirecloud.defaulttheme")
-DEFAULT_LANGUAGE = 'browser'
+DEFAULT_LANGUAGE = os.environ.get("DEFAULT_LANGUAGE", 'browser')
+from django.conf.global_settings import LANGUAGES
+
+# Configure available translations
+# Filter using available translations by default
+lang_filter = os.environ.get("LANGUAGES", "en es ja").split()
+if len(lang_filter) > 0:
+    LANGUAGES = dict(LANGUAGES)
+    LANGUAGES = [(lang_code, LANGUAGES[lang_code]) for lang_code in lang_filter if lang_code in LANGUAGES]
 
 # WGT deployment dirs
 CATALOGUE_MEDIA_ROOT = os.path.join(DATADIR, 'catalogue_resources')
