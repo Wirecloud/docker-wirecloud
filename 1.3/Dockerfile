@@ -10,7 +10,7 @@ ENV LOGLEVEL=info
 
 RUN apt-get update && \
     apt-get install -y libmemcached-dev gosu && \
-    pip install --no-cache-dir social-auth-app-django "gunicorn==19.3.0" "psycopg2==2.6" pylibmc pysolr "elasticsearch==2.4.1" && \
+    pip install --no-cache-dir social-auth-app-django "gunicorn==19.3.0" "psycopg2==2.6" pylibmc pysolr "elasticsearch==2.4.1" wirecloud-keycloak && \
     rm -rf /var/lib/apt/lists/* && \
     gosu nobody true
 

@@ -8,9 +8,18 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 from wirecloud.commons import authentication as wc_auth
 from wirecloud.fiware import views as wc_fiware
+from wirecloud.keycloak import views as wc_keycloak
+
 import wirecloud.platform.urls
 
 admin.autodiscover()
+
+login_method = django_auth.login
+if settings.IDM_AUTH == 'fiware':
+    login_method = wc_fiware.login
+
+if settings.IDM_AUTH == 'keycloak':
+    login_method = wc_keycloak.login
 
 urlpatterns = (
 
@@ -21,7 +30,7 @@ urlpatterns = (
     url(r'^cdp/', include('wirecloud.proxy.urls')),
 
     # Login/logout
-    url(r'^login/?$', wc_fiware.login if settings.IDM_AUTH_ENABLED else django_auth.login, name="login"),
+    url(r'^login/?$', login_method, name="login"),
     url(r'^logout/?$', wc_auth.logout, name="logout"),
     url(r'^admin/logout/?$', wc_auth.logout),
 
@@ -29,7 +38,7 @@ urlpatterns = (
     url(r'^admin/', include(admin.site.urls)),
 )
 
-if settings.IDM_AUTH_ENABLED:
+if settings.IDM_AUTH is not None:
     urlpatterns += (url('', include('social_django.urls', namespace='social')),)
 
 urlpatterns += wirecloud.platform.urls.urlpatterns

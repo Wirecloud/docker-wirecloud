@@ -127,15 +127,33 @@ ROOT_URLCONF = 'wirecloud_instance.urls'
 WSGI_APPLICATION = 'wirecloud_instance.wsgi.application'
 
 # FIWARE IdM configuration
-FIWARE_IDM_SERVER = os.environ.get('FIWARE_IDM_SERVER', '').strip()
-FIWARE_IDM_PUBLIC_URL = os.environ.get('FIWARE_IDM_PUBLIC_URL', FIWARE_IDM_SERVER).strip()
-SOCIAL_AUTH_FIWARE_KEY = os.environ.get('SOCIAL_AUTH_FIWARE_KEY', '').strip()
-SOCIAL_AUTH_FIWARE_SECRET = os.environ.get('SOCIAL_AUTH_FIWARE_SECRET', '').strip()
-IDM_AUTH_ENABLED = FIWARE_IDM_SERVER and SOCIAL_AUTH_FIWARE_KEY and SOCIAL_AUTH_FIWARE_SECRET
+IDM_AUTH = None
+if os.environ.get('FIWARE_IDM_SERVER', '').strip() != '':
+    FIWARE_IDM_SERVER = os.environ.get('FIWARE_IDM_SERVER', '').strip()
+    FIWARE_IDM_PUBLIC_URL = os.environ.get('FIWARE_IDM_PUBLIC_URL', FIWARE_IDM_SERVER).strip()
+    SOCIAL_AUTH_FIWARE_KEY = os.environ.get('SOCIAL_AUTH_FIWARE_KEY', '').strip()
+    SOCIAL_AUTH_FIWARE_SECRET = os.environ.get('SOCIAL_AUTH_FIWARE_SECRET', '').strip()
+    IDM_AUTH = 'fiware' if FIWARE_IDM_SERVER and SOCIAL_AUTH_FIWARE_KEY and SOCIAL_AUTH_FIWARE_SECRET else None
 
-if IDM_AUTH_ENABLED:
+elif os.environ.get('KEYCLOAK_IDM_SERVER', '').strip() != '':
+    KEYCLOAK_IDM_SERVER = os.environ.get('KEYCLOAK_IDM_SERVER', '').strip()
+    KEYCLOAK_REALM = os.environ.get('KEYCLOAK_REALM', '').strip()
+    KEYCLOAK_KEY = os.environ.get('KEYCLOAK_KEY', '').strip()
+    KEYCLOAK_GLOBAL_ROLE = os.environ.get('KEYCLOAK_GLOBAL_ROLE', '').strip() == 'True'
+    SOCIAL_AUTH_KEYCLOAK_KEY = os.environ.get('SOCIAL_AUTH_KEYCLOAK_KEY', '').strip()
+    SOCIAL_AUTH_KEYCLOAK_SECRET = os.environ.get('SOCIAL_AUTH_KEYCLOAK_SECRET', '').strip()
+    IDM_AUTH = 'keycloak' if KEYCLOAK_IDM_SERVER and KEYCLOAK_REALM and KEYCLOAK_KEY and SOCIAL_AUTH_KEYCLOAK_KEY and SOCIAL_AUTH_KEYCLOAK_SECRET else None
+
+if IDM_AUTH == 'fiware':
     INSTALLED_APPS += (
         'wirecloud.fiware',
+        'social_django',
+        'haystack',
+    )
+elif IDM_AUTH == 'keycloak':
+    INSTALLED_APPS += (
+        'wirecloud.fiware',
+        'wirecloud.keycloak',
         'social_django',
         'haystack',
     )
@@ -192,9 +210,13 @@ USE_X_FORWARDED_HOST = True
 USE_X_FORWARDED_PORT = True
 
 # Auth configuration
-if IDM_AUTH_ENABLED:
+if IDM_AUTH == 'fiware':
     AUTHENTICATION_BACKENDS = (
         'wirecloud.fiware.social_auth_backend.FIWAREOAuth2',
+    )
+elif IDM_AUTH == 'keycloak':
+    AUTHENTICATION_BACKENDS = (
+        'wirecloud.keycloak.social_auth_backend.KeycloakOAuth2',
     )
 else:
     AUTHENTICATION_BACKENDS = (
