@@ -126,23 +126,39 @@ ROOT_URLCONF = 'wirecloud_instance.urls'
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'wirecloud_instance.wsgi.application'
 
-# FIWARE IdM configuration
-IDM_AUTH = None
-if os.environ.get('FIWARE_IDM_SERVER', '').strip() != '':
-    FIWARE_IDM_SERVER = os.environ.get('FIWARE_IDM_SERVER', '').strip()
-    FIWARE_IDM_PUBLIC_URL = os.environ.get('FIWARE_IDM_PUBLIC_URL', FIWARE_IDM_SERVER).strip()
-    SOCIAL_AUTH_FIWARE_KEY = os.environ.get('SOCIAL_AUTH_FIWARE_KEY', '').strip()
-    SOCIAL_AUTH_FIWARE_SECRET = os.environ.get('SOCIAL_AUTH_FIWARE_SECRET', '').strip()
-    IDM_AUTH = 'fiware' if FIWARE_IDM_SERVER and SOCIAL_AUTH_FIWARE_KEY and SOCIAL_AUTH_FIWARE_SECRET else None
 
-elif os.environ.get('KEYCLOAK_IDM_SERVER', '').strip() != '':
-    KEYCLOAK_IDM_SERVER = os.environ.get('KEYCLOAK_IDM_SERVER', '').strip()
-    KEYCLOAK_REALM = os.environ.get('KEYCLOAK_REALM', '').strip()
-    KEYCLOAK_KEY = os.environ.get('KEYCLOAK_KEY', '').strip()
-    KEYCLOAK_GLOBAL_ROLE = os.environ.get('KEYCLOAK_GLOBAL_ROLE', '').strip() == 'True'
-    SOCIAL_AUTH_KEYCLOAK_KEY = os.environ.get('SOCIAL_AUTH_KEYCLOAK_KEY', '').strip()
-    SOCIAL_AUTH_KEYCLOAK_SECRET = os.environ.get('SOCIAL_AUTH_KEYCLOAK_SECRET', '').strip()
-    IDM_AUTH = 'keycloak' if KEYCLOAK_IDM_SERVER and KEYCLOAK_REALM and KEYCLOAK_KEY and SOCIAL_AUTH_KEYCLOAK_KEY and SOCIAL_AUTH_KEYCLOAK_SECRET else None
+# Handle some basic settings
+
+## String settings
+STRING_SETTINGS = (
+    "FIWARE_IDM_SERVER",
+    "FIWARE_IDM_PUBLIC_URL",
+    "SOCIAL_AUTH_FIWARE_KEY",
+    "SOCIAL_AUTH_FIWARE_SECRET",
+    "KEYCLOAK_SERVER",
+    "KEYCLOAK_REALM",
+    "KEYCLOAK_KEY",
+    "SOCIAL_AUTH_KEYCLOAK_KEY",
+    "SOCIAL_AUTH_KEYCLOAK_SECRET",
+)
+for setting in STRING_SETTINGS:
+    value = os.environ.get(setting, "").strip()
+    if value != "":
+        locals()[setting] = value
+
+## Boolean settings
+BOOLEAN_SETTINGS = (
+    "KEYCLOAK_GLOBAL_ROLE",
+)
+for setting in BOOLEAN_SETTINGS:
+    value = os.environ.get(setting, "").strip()
+    if value != "":
+        locals()[setting] = value.lower() == "true"
+
+
+# FIWARE & Keycloak configuration
+IDM_AUTH = 'fiware' if "FIWARE_IDM_SERVER" in locals() and "SOCIAL_AUTH_FIWARE_KEY" in locals() and "SOCIAL_AUTH_FIWARE_SECRET" in locals() else None
+IDM_AUTH = 'keycloak' if "KEYCLOAK_IDM_SERVER" in locals() and "KEYCLOAK_REALM" in locals() and "KEYCLOAK_KEY" in locals() and "SOCIAL_AUTH_KEYCLOAK_KEY" in locals() and "SOCIAL_AUTH_KEYCLOAK_SECRET" in locals() else IDM_AUTH
 
 if IDM_AUTH == 'fiware':
     INSTALLED_APPS += (

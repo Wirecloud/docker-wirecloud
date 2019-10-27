@@ -9,7 +9,6 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from wirecloud.commons import authentication as wc_auth
 from wirecloud.fiware import views as wc_fiware
 from wirecloud.keycloak import views as wc_keycloak
-
 import wirecloud.platform.urls
 
 admin.autodiscover()

@@ -53,7 +53,7 @@ services:
             - FORWARDED_ALLOW_IPS=*
             - ELASTICSEARCH2_URL=http://elasticsearch:9200/
             - MEMCACHED_LOCATION=memcached:11211
-            # Uncomment the following environment variables to enable IDM integration
+            # Uncomment the following environment variables to enable FIWARE IDM integration
             #- FIWARE_IDM_SERVER=${FIWARE_IDM_SERVER}
             #- SOCIAL_AUTH_FIWARE_KEY=${SOCIAL_AUTH_FIWARE_KEY}
             #- SOCIAL_AUTH_FIWARE_SECRET=${SOCIAL_AUTH_FIWARE_SECRET}

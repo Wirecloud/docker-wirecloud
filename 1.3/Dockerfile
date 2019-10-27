@@ -10,7 +10,7 @@ ENV LOGLEVEL=info
 
 RUN apt-get update && \
     apt-get install -y libmemcached-dev gosu && \
-    pip install --no-cache-dir social-auth-app-django "gunicorn==19.3.0" "psycopg2==2.6" pylibmc pysolr "elasticsearch==2.4.1" wirecloud-keycloak && \
+    pip install --no-cache-dir social-auth-app-django "gunicorn==19.3.0" "psycopg2==2.6" pylibmc pysolr "elasticsearch==2.4.1" && \
     rm -rf /var/lib/apt/lists/* && \
     gosu nobody true
 
@@ -21,7 +21,7 @@ COPY ./docker-entrypoint.sh /
 COPY ./manage.py /usr/local/bin/
 
 RUN adduser --system --group --shell /bin/bash wirecloud && \
-    pip install --no-cache-dir channels asgi_ipc asgi_redis asgi_rabbitmq && \
+    pip install --no-cache-dir channels asgi_ipc asgi_redis asgi_rabbitmq wirecloud_keycloak && \
     mkdir -p /opt/wirecloud_instance /var/www/static && \
     cd /opt && \
     wirecloud-admin startproject wirecloud_instance wirecloud_instance && \
