@@ -53,10 +53,17 @@ services:
             - FORWARDED_ALLOW_IPS=*
             - ELASTICSEARCH2_URL=http://elasticsearch:9200/
             - MEMCACHED_LOCATION=memcached:11211
-            # Uncomment the following environment variables to enable IDM integration
+            # Uncomment the following environment variables to enable FIWARE IDM integration
             #- FIWARE_IDM_SERVER=${FIWARE_IDM_SERVER}
             #- SOCIAL_AUTH_FIWARE_KEY=${SOCIAL_AUTH_FIWARE_KEY}
             #- SOCIAL_AUTH_FIWARE_SECRET=${SOCIAL_AUTH_FIWARE_SECRET}
+            # Uncomment the following environment variables to enable Keycloak IDM Integration
+            #- KEYCLOAK_IDM_SERVER=${KEYCLOAK_IDM_SERVER}
+            #- KEYCLOAK_REALM=${KEYCLOAK_REALM}
+            #- KEYCLOAK_KEY=${KEYCLOAK_KEY}
+            #- KEYCLOAK_GLOBAL_ROLE=${KEYCLOAK_GLOBAL_ROLE}
+            #- SOCIAL_AUTH_KEYCLOAK_KEY=${SOCIAL_AUTH_KEYCLOAK_KEY}
+            #- SOCIAL_AUTH_KEYCLOAK_SECRET=${SOCIAL_AUTH_KEYCLOAK_SECRET}
         volumes:
             - ./wirecloud-data:/opt/wirecloud_instance/data
             - ./wirecloud-static:/var/www/static
