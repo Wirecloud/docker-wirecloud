@@ -31,7 +31,7 @@ The following environment variables are also honored for configuring your WireCl
     mode. Debug mode should be enabled for running WireCloud in standalone mode)
 - `-e LOGLEVEL=...` (defaults to "INFO")
 - `-e ALLOWED_HOSTS=...` (defaults to "*", whitespace whitespace-separated list
-    of allowed hosts. See [django documentation][ALLOWED_HOSTS] for more
+    of allowed hosts. See [Django documentation][ALLOWED_HOSTS] for more
     details)
 - `-e DEFAULT_LANGUAGE=...` (defaults to "browser", see
     [documentation][DEFAULT_LANGUAGE] for more details)
@@ -68,12 +68,22 @@ The following environment variables are also honored for configuring your WireCl
 - `-e SOCIAL_AUTH_KEYCLOAK_KEY=...` (defaults to nothing)
 - `-e SOCIAL_AUTH_KEYCLOAK_SECRET=...` (defaults to nothing)
 
+In addition to those environment variables, this docker image also allows you to
+configure the following Django settings using environment variables with the
+same name: `CSRF_COOKIE_AGE`, `CSRF_COOKIE_HTTPONLY`, `CSRF_COOKIE_NAME`,
+`CSRF_COOKIE_SECURE`, `EMAIL_HOST`, `EMAIL_HOST_PASSWORD`, `EMAIL_PORT`,
+`EMAIL_HOST_USER`, `EMAIL_USE_SSL`, `EMAIL_USE_TLS`, `SECRET_KEY`,
+`SESSION_COOKIE_AGE`, `SESSION_COOKIE_NAME`, `SESSION_COOKIE_HTTPONLY` and
+`SESSION_COOKIE_SECURE`. See [Django documentation](DJANGO_SETTINGS) for more
+details.
+
 When running WireCloud with TLS behind a reverse proxy such as Apache/NGINX
 which is responsible for doing TLS termination, be sure to set
 the `X-Forwarded-Proto`, `X-Forwarded-Host` and `X-Forwarded-Port` headers
 appropriately.
 
 
+[DJANGO_SETTINGS]: https://docs.djangoproject.com/en/2.1/ref/settings/
 [ALLOWED_HOSTS]: https://docs.djangoproject.com/en/2.1/ref/settings/#allowed-hosts
 [DEFAULT_LANGUAGE]: https://wirecloud.readthedocs.io/en/stable/installation_guide/#default_language
 [LANGUAGE_CODE]: https://docs.djangoproject.com/en/2.1/ref/settings/#language-code

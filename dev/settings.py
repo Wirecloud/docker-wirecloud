@@ -130,6 +130,10 @@ WSGI_APPLICATION = 'wirecloud_instance.wsgi.application'
 
 ## String settings
 STRING_SETTINGS = (
+    "CSRF_COOKIE_NAME",
+    "EMAIL_HOST",
+    "EMAIL_HOST_PASSWORD",
+    "EMAIL_HOST_USER",
     "FIWARE_IDM_SERVER",
     "FIWARE_IDM_PUBLIC_URL",
     "SOCIAL_AUTH_FIWARE_KEY",
@@ -137,6 +141,8 @@ STRING_SETTINGS = (
     "KEYCLOAK_SERVER",
     "KEYCLOAK_REALM",
     "KEYCLOAK_KEY",
+    "SECRET_KEY",
+    "SESSION_COOKIE_NAME",
     "SOCIAL_AUTH_KEYCLOAK_KEY",
     "SOCIAL_AUTH_KEYCLOAK_SECRET",
 )
@@ -145,9 +151,28 @@ for setting in STRING_SETTINGS:
     if value != "":
         locals()[setting] = value
 
+## Number settings
+NUMBER_SETTINGS = (
+    "CSRF_COOKIE_AGE",
+    "EMAIL_PORT",
+    "SESSION_COOKIE_AGE",
+)
+for setting in NUMBER_SETTINGS:
+    value = os.environ.get(setting, "").strip()
+    try:
+        locals()[setting] = int(value)
+    except ValueError:
+        pass
+
 ## Boolean settings
 BOOLEAN_SETTINGS = (
+    "CSRF_COOKIE_HTTPONLY",
+    "CSRF_COOKIE_SECURE",
+    "EMAIL_USE_TLS",
+    "EMAIL_USE_SSL",
     "KEYCLOAK_GLOBAL_ROLE",
+    "SESSION_COOKIE_HTTPONLY",
+    "SESSION_COOKIE_SECURE",
 )
 for setting in BOOLEAN_SETTINGS:
     value = os.environ.get(setting, "").strip()
@@ -157,7 +182,7 @@ for setting in BOOLEAN_SETTINGS:
 
 # FIWARE & Keycloak configuration
 IDM_AUTH = 'fiware' if "FIWARE_IDM_SERVER" in locals() and "SOCIAL_AUTH_FIWARE_KEY" in locals() and "SOCIAL_AUTH_FIWARE_SECRET" in locals() else None
-IDM_AUTH = 'keycloak' if "KEYCLOAK_IDM_SERVER" in locals() and "KEYCLOAK_REALM" in locals() and "KEYCLOAK_KEY" in locals() and "SOCIAL_AUTH_KEYCLOAK_KEY" in locals() and "SOCIAL_AUTH_KEYCLOAK_SECRET" in locals() else IDM_AUTH
+IDM_AUTH = 'keycloak' if "KEYCLOAK_SERVER" in locals() and "KEYCLOAK_REALM" in locals() and "KEYCLOAK_KEY" in locals() and "SOCIAL_AUTH_KEYCLOAK_KEY" in locals() and "SOCIAL_AUTH_KEYCLOAK_SECRET" in locals() else IDM_AUTH
 
 if IDM_AUTH == 'fiware':
     INSTALLED_APPS += (
