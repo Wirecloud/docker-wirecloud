@@ -42,6 +42,7 @@ COPY ./manage.py /usr/local/bin/
 
 RUN adduser --system --group --shell /bin/bash wirecloud && \
     pip install --no-cache-dir channels asgi_ipc asgi_redis asgi_rabbitmq && \
+    pip install wirecloud-keycloak && \
     mkdir -p /opt/wirecloud_instance /var/www/static && \
     cd /opt && \
     wirecloud-admin startproject wirecloud_instance wirecloud_instance && \
