@@ -58,6 +58,15 @@ The following environment variables are also honored for configuring your WireCl
     the browser to the IdM portal)
 - `-e SOCIAL_AUTH_FIWARE_KEY=...` (defaults to nothing)
 - `-e SOCIAL_AUTH_FIWARE_SECRET=...` (defaults to nothing)
+- `-e KEYCLOAK_IDM_SERVER=...` (defaults to nothing, leave it empty for
+    authenticating users using the credentials stored on the WireCloud
+    database.)
+- `-e KEYCLOAK_REALM=...` (default to nothing, realm to use for connecting with
+   keycloak)
+- `-e KEYCLOAK_KEY=...` (default to nothing)
+- `-e KEYCLOAK_GLOBAL_ROLE=...` (default to "False")
+- `-e SOCIAL_AUTH_KEYCLOAK_KEY=...` (defaults to nothing)
+- `-e SOCIAL_AUTH_KEYCLOAK_SECRET=...` (defaults to nothing)
 
 When running WireCloud with TLS behind a reverse proxy such as Apache/NGINX
 which is responsible for doing TLS termination, be sure to set
