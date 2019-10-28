@@ -118,7 +118,8 @@ STATIC_URL = '/static/'
 #     'django.contrib.staticfiles.finders.DefaultStorageFinder',
 # )
 
-# Make this unique, and don't share it with anybody.
+# Default value, this value must be overwritten using one of the following
+# environment variables: SECRET_KEY or SECRET_KEY_FILE
 SECRET_KEY = '4&0+qo=m4yk!7hohzh&xsw=i&g_7t88*-9_^j(xi!fzm9zz^7l'
 
 ROOT_URLCONF = 'wirecloud_instance.urls'
@@ -136,18 +137,37 @@ STRING_SETTINGS = (
     "EMAIL_HOST_USER",
     "FIWARE_IDM_SERVER",
     "FIWARE_IDM_PUBLIC_URL",
-    "SOCIAL_AUTH_FIWARE_KEY",
-    "SOCIAL_AUTH_FIWARE_SECRET",
     "KEYCLOAK_SERVER",
     "KEYCLOAK_REALM",
     "KEYCLOAK_KEY",
     "SECRET_KEY",
     "SESSION_COOKIE_NAME",
+    "SOCIAL_AUTH_FIWARE_KEY",
+    "SOCIAL_AUTH_FIWARE_SECRET",
+    "SOCIAL_AUTH_KEYCLOAK_KEY",
+    "SOCIAL_AUTH_KEYCLOAK_SECRET",
+)
+SENSITIVE_SETTINGS = (
+    "EMAIL_HOST_PASSWORD",
+    "KEYCLOAK_KEY",
+    "SECRET_KEY",
+    "SOCIAL_AUTH_FIWARE_KEY",
+    "SOCIAL_AUTH_FIWARE_SECRET",
     "SOCIAL_AUTH_KEYCLOAK_KEY",
     "SOCIAL_AUTH_KEYCLOAK_SECRET",
 )
 for setting in STRING_SETTINGS:
-    value = os.environ.get(setting, "").strip()
+    if setting in SENSITIVE_SETTINGS and (setting + '_FILE') in os.environ:
+        filename = os.environ[setting + '_FILE']
+        try:
+            with open(filename, 'rb') as f:
+                value = f.read()
+        except IOError as error:
+            print("Error reading the file ({}) pointed out by {}: {}".format(setting + '_FILE', filename, error))
+            print("Ignoring it")
+            value = os.environ.get(setting, "").strip()
+    else:
+        value = os.environ.get(setting, "").strip()
     if value != "":
         locals()[setting] = value
 
