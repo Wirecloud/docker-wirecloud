@@ -118,7 +118,8 @@ STATIC_URL = '/static/'
 #     'django.contrib.staticfiles.finders.DefaultStorageFinder',
 # )
 
-# Make this unique, and don't share it with anybody.
+# Default value, this value must be overwritten using one of the following
+# environment variables: SECRET_KEY or SECRET_KEY_FILE
 SECRET_KEY = '4&0+qo=m4yk!7hohzh&xsw=i&g_7t88*-9_^j(xi!fzm9zz^7l'
 
 ROOT_URLCONF = 'wirecloud_instance.urls'
@@ -130,24 +131,68 @@ WSGI_APPLICATION = 'wirecloud_instance.wsgi.application'
 
 ## String settings
 STRING_SETTINGS = (
+    "CSRF_COOKIE_NAME",
+    "EMAIL_HOST",
+    "EMAIL_HOST_PASSWORD",
+    "EMAIL_HOST_USER",
     "FIWARE_IDM_SERVER",
     "FIWARE_IDM_PUBLIC_URL",
-    "SOCIAL_AUTH_FIWARE_KEY",
-    "SOCIAL_AUTH_FIWARE_SECRET",
     "KEYCLOAK_SERVER",
     "KEYCLOAK_REALM",
     "KEYCLOAK_KEY",
+    "SECRET_KEY",
+    "SESSION_COOKIE_NAME",
+    "SOCIAL_AUTH_FIWARE_KEY",
+    "SOCIAL_AUTH_FIWARE_SECRET",
+    "SOCIAL_AUTH_KEYCLOAK_KEY",
+    "SOCIAL_AUTH_KEYCLOAK_SECRET",
+)
+SENSITIVE_SETTINGS = (
+    "EMAIL_HOST_PASSWORD",
+    "KEYCLOAK_KEY",
+    "SECRET_KEY",
+    "SOCIAL_AUTH_FIWARE_KEY",
+    "SOCIAL_AUTH_FIWARE_SECRET",
     "SOCIAL_AUTH_KEYCLOAK_KEY",
     "SOCIAL_AUTH_KEYCLOAK_SECRET",
 )
 for setting in STRING_SETTINGS:
-    value = os.environ.get(setting, "").strip()
+    if setting in SENSITIVE_SETTINGS and (setting + '_FILE') in os.environ:
+        filename = os.environ[setting + '_FILE']
+        try:
+            with open(filename, 'rb') as f:
+                value = f.read()
+        except IOError as error:
+            print("Error reading the file ({}) pointed out by {}: {}".format(setting + '_FILE', filename, error))
+            print("Ignoring it")
+            value = os.environ.get(setting, "").strip()
+    else:
+        value = os.environ.get(setting, "").strip()
     if value != "":
         locals()[setting] = value
 
+## Number settings
+NUMBER_SETTINGS = (
+    "CSRF_COOKIE_AGE",
+    "EMAIL_PORT",
+    "SESSION_COOKIE_AGE",
+)
+for setting in NUMBER_SETTINGS:
+    value = os.environ.get(setting, "").strip()
+    try:
+        locals()[setting] = int(value)
+    except ValueError:
+        pass
+
 ## Boolean settings
 BOOLEAN_SETTINGS = (
+    "CSRF_COOKIE_HTTPONLY",
+    "CSRF_COOKIE_SECURE",
+    "EMAIL_USE_TLS",
+    "EMAIL_USE_SSL",
     "KEYCLOAK_GLOBAL_ROLE",
+    "SESSION_COOKIE_HTTPONLY",
+    "SESSION_COOKIE_SECURE",
 )
 for setting in BOOLEAN_SETTINGS:
     value = os.environ.get(setting, "").strip()
@@ -157,7 +202,7 @@ for setting in BOOLEAN_SETTINGS:
 
 # FIWARE & Keycloak configuration
 IDM_AUTH = 'fiware' if "FIWARE_IDM_SERVER" in locals() and "SOCIAL_AUTH_FIWARE_KEY" in locals() and "SOCIAL_AUTH_FIWARE_SECRET" in locals() else None
-IDM_AUTH = 'keycloak' if "KEYCLOAK_IDM_SERVER" in locals() and "KEYCLOAK_REALM" in locals() and "KEYCLOAK_KEY" in locals() and "SOCIAL_AUTH_KEYCLOAK_KEY" in locals() and "SOCIAL_AUTH_KEYCLOAK_SECRET" in locals() else IDM_AUTH
+IDM_AUTH = 'keycloak' if "KEYCLOAK_SERVER" in locals() and "KEYCLOAK_REALM" in locals() and "KEYCLOAK_KEY" in locals() and "SOCIAL_AUTH_KEYCLOAK_KEY" in locals() and "SOCIAL_AUTH_KEYCLOAK_SECRET" in locals() else IDM_AUTH
 
 if IDM_AUTH == 'fiware':
     INSTALLED_APPS += (
