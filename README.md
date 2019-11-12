@@ -72,7 +72,7 @@ In addition to those environment variables, this docker image also allows you to
 configure the following Django settings using environment variables with the
 same name: `CSRF_COOKIE_AGE`, `CSRF_COOKIE_HTTPONLY`, `CSRF_COOKIE_NAME`,
 `CSRF_COOKIE_SECURE`, `EMAIL_HOST`, `EMAIL_HOST_PASSWORD`, `EMAIL_PORT`,
-`EMAIL_HOST_USER`, `EMAIL_USE_SSL`, `EMAIL_USE_TLS`, `SECRET_KEY`,
+`EMAIL_HOST_USER`, `EMAIL_USE_SSL`, `EMAIL_USE_TLS`, `LOGOUT_REDIRECT_URL`, `SECRET_KEY`,
 `SESSION_COOKIE_AGE`, `SESSION_COOKIE_NAME`, `SESSION_COOKIE_HTTPONLY` and
 `SESSION_COOKIE_SECURE`. See [Django documentation][DJANGO_SETTINGS] for more
 details.
