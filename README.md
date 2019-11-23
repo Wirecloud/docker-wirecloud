@@ -102,10 +102,14 @@ docker run --name wirecloud -e DB_PASSWORD_FILE=/run/secrets/password -d fiware/
 
 Currently, this `_FILE` suffix is supported for:
 
--  `DB_PASSWORD`
--  `DB_USERNAME`
+-  `EMAIL_HOST_PASSWORD`
+-  `KEYCLOAK_KEY`
+-  `LOGOUT_REDIRECT_URL`
+-  `SECRET_KEY`
 -  `SOCIAL_AUTH_FIWARE_KEY`
 -  `SOCIAL_AUTH_FIWARE_SECRET`
+-  `SOCIAL_AUTH_KEYCLOAK_KEY`
+-  `SOCIAL_AUTH_KEYCLOAK_SECRET`
 
 
 ## Running manage.py commands
