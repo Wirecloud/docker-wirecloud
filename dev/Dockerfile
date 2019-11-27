@@ -1,60 +1,68 @@
-ARG PYTHON_VERSION=3.6-stretch
-FROM python:${PYTHON_VERSION}
+ARG PYTHON_VERSION=3.6
 
 ARG GITHUB_ACCOUNT=Wirecloud
 ARG GITHUB_REPOSITORY=wirecloud
 ARG SOURCE_BRANCH=develop
+
+
+
+FROM python:${PYTHON_VERSION} AS builder
+
+ARG GITHUB_ACCOUNT
+ARG GITHUB_REPOSITORY
+ARG SOURCE_BRANCH
+
+# Build WireCloud wheel
+RUN git clone -b "${SOURCE_BRANCH}" --depth=1  --single-branch https://github.com/"${GITHUB_ACCOUNT}"/"${GITHUB_REPOSITORY}".git && \
+    apt-get update && apt-get install -y gettext && \
+    pip install "django<=2.3" && \
+    cd "${GITHUB_REPOSITORY}"/src && \
+    python setup.py bdist_wheel
+
+
+
+FROM python:${PYTHON_VERSION}-slim
+
+ARG GITHUB_ACCOUNT
+ARG GITHUB_REPOSITORY
+ARG SOURCE_BRANCH
 
 # Copying Build time arguments to environment variables so they are persisted at run time and can be 
 # inspected within a running container.
 # see: https://vsupalov.com/docker-build-time-env-values/  for a deeper explanation.
 
 ENV GITHUB_ACCOUNT=${GITHUB_ACCOUNT} \
-    GITHUB_REPOSITORY=${GITHUB_REPOSITORY}
-
-MAINTAINER WireCloud Team <wirecloud@conwet.com>
-
-ENV DEFAULT_THEME=wirecloud.defaulttheme \
+    GITHUB_REPOSITORY=${GITHUB_REPOSITORY} \
+    DEFAULT_THEME=wirecloud.defaulttheme \
     FORWARDED_ALLOW_IPS=* \
     DB_PORT=5432 \
     LOGLEVEL=info
 
-RUN apt-get update && \
-    apt-get install -y libmemcached-dev gosu && \
-    pip install --no-cache-dir social-auth-app-django "gunicorn==19.3.0" "psycopg2==2.6" pylibmc pysolr "elasticsearch==2.4.1" && \
-    rm -rf /var/lib/apt/lists/* && \
-    gosu nobody true
-
 # Install WireCloud & dependencies
-RUN git clone -b "${SOURCE_BRANCH}" --depth=1  --single-branch https://github.com/"${GITHUB_ACCOUNT}"/"${GITHUB_REPOSITORY}".git && \
-    apt-get update && apt-get install -y gettext && \
-    pip install "django<=1.11" && \
-    cd "${GITHUB_REPOSITORY}"/src && \
-    python setup.py bdist_wheel && \
-    pip install --no-cache-dir dist/*.whl && \
-    cd ../.. && \
-    rm -rf "${GITHUB_REPOSITORY}" && \
-    apt-get remove -y gettext && \
-    rm -rf /var/lib/apt/lists/*
-
+COPY --from=builder ${GITHUB_REPOSITORY}/src/dist /dist
 COPY ./docker-entrypoint.sh /
 COPY ./manage.py /usr/local/bin/
 
-RUN adduser --system --group --shell /bin/bash wirecloud && \
-    pip install --no-cache-dir channels asgi_ipc asgi_redis asgi_rabbitmq && \
-    pip install wirecloud-keycloak && \
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends libmemcached-dev gosu gcc ca-certificates curl && \
+    pip install --no-cache-dir social-auth-app-django "gunicorn==19.3.0" psycopg2-binary pylibmc pysolr "elasticsearch==2.4.1" && \
+    pip install --no-cache-dir /dist/*.whl && \
+    rm -rf /dist && \
+    adduser --system --group --shell /bin/bash wirecloud && \
+    pip install --no-cache-dir "channels<2.3" "channels-redis" "channels-rabbitmq" wirecloud-keycloak && \
     mkdir -p /opt/wirecloud_instance /var/www/static && \
     cd /opt && \
     wirecloud-admin startproject wirecloud_instance wirecloud_instance && \
     chown -R wirecloud:wirecloud wirecloud_instance /var/www/static && \
     chmod a+x wirecloud_instance/manage.py  && \
-    chmod a+x /docker-entrypoint.sh
+    chmod a+x /docker-entrypoint.sh && \
+    apt-get remove -y gcc libmemcached-dev --autoremove && \
+    rm -rf /var/lib/apt/lists/*
 
 COPY ./settings.py ./urls.py /opt/wirecloud_instance/wirecloud_instance/
 
 WORKDIR /opt/wirecloud_instance
 
-# volumes must be created after running the collectstatic command
 VOLUME /var/www/static
 VOLUME /opt/wirecloud_instance/data
 
