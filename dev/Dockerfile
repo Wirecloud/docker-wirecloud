@@ -15,7 +15,7 @@ ARG SOURCE_BRANCH
 # Build WireCloud wheel
 RUN git clone -b "${SOURCE_BRANCH}" --depth=1  --single-branch https://github.com/"${GITHUB_ACCOUNT}"/"${GITHUB_REPOSITORY}".git && \
     apt-get update && apt-get install -y gettext && \
-    pip install "django<=1.11" && \
+    pip install "django<=2.3" && \
     cd "${GITHUB_REPOSITORY}"/src && \
     python setup.py bdist_wheel
 
@@ -49,7 +49,7 @@ RUN apt-get update && \
     pip install --no-cache-dir /dist/*.whl && \
     rm -rf /dist && \
     adduser --system --group --shell /bin/bash wirecloud && \
-    pip install --no-cache-dir channels asgi_ipc asgi_redis asgi_rabbitmq wirecloud-keycloak && \
+    pip install --no-cache-dir "channels<2.3" "channels-redis" "channels-rabbitmq" wirecloud-keycloak && \
     mkdir -p /opt/wirecloud_instance /var/www/static && \
     cd /opt && \
     wirecloud-admin startproject wirecloud_instance wirecloud_instance && \
