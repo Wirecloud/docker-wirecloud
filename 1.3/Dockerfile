@@ -21,7 +21,7 @@ COPY ./docker-entrypoint.sh /
 COPY ./manage.py /usr/local/bin/
 
 RUN adduser --system --group --shell /bin/bash wirecloud && \
-    pip install --no-cache-dir channels asgi_ipc asgi_redis asgi_rabbitmq wirecloud_keycloak && \
+    pip install --no-cache-dir "channels<2.4.0" asgi_ipc asgi_redis asgi_rabbitmq wirecloud_keycloak && \
     mkdir -p /opt/wirecloud_instance /var/www/static && \
     cd /opt && \
     wirecloud-admin startproject wirecloud_instance wirecloud_instance && \
