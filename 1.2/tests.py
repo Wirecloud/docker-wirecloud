@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2018 Future Internet Consulting and Development Solutions S.L.
+# Copyright (c) 2018-2020 Future Internet Consulting and Development Solutions S.L.
 
 import grp
 import pwd
@@ -89,8 +89,6 @@ class StandaloneTests(unittest.TestCase, WireCloudTests):
         print("# Removing containers and volumes")
         print("#\n")
         sh.docker_compose.down(remove_orphans=True, v=True, _fg=True)
-        shutil.rmtree('wirecloud-data')
-        shutil.rmtree('wirecloud-static')
         print()
 
 
@@ -113,8 +111,6 @@ class SimpleTests(unittest.TestCase, WireCloudTests):
         print("# Removing containers and volumes")
         print("#\n")
         sh.docker_compose.down(remove_orphans=True, v=True, _fg=True)
-        shutil.rmtree('wirecloud-data')
-        shutil.rmtree('wirecloud-static')
         print()
 
 
@@ -137,10 +133,6 @@ class ComposedTests(unittest.TestCase, WireCloudTests):
         print("# Removing containers and volumes")
         print("#\n")
         sh.docker_compose.down(remove_orphans=True, v=True, _fg=True)
-        shutil.rmtree('wirecloud-data')
-        shutil.rmtree('wirecloud-static')
-        shutil.rmtree('elasticsearch-data')
-        shutil.rmtree('postgres-data')
         print()
 
 
@@ -164,10 +156,6 @@ class ReadOnlyConfigTests(unittest.TestCase, WireCloudTests):
         print("# Removing containers and volumes")
         print("#\n")
         sh.docker_compose.down(remove_orphans=True, v=True, _fg=True)
-        shutil.rmtree('wirecloud-data')
-        shutil.rmtree('wirecloud-static')
-        shutil.rmtree('elasticsearch-data')
-        shutil.rmtree('postgres-data')
         print()
 
 
@@ -196,10 +184,6 @@ class IDMTests(unittest.TestCase, WireCloudTests):
         print("# Removing containers and volumes")
         print("#\n")
         sh.docker_compose.down(remove_orphans=True, v=True, _fg=True)
-        shutil.rmtree('wirecloud-data')
-        shutil.rmtree('wirecloud-static')
-        shutil.rmtree('elasticsearch-data')
-        shutil.rmtree('postgres-data')
         print()
 
     def test_login_should_redirect_to_idm(self):

@@ -10,5 +10,9 @@ services:
         environment:
             - DEBUG=True
         volumes:
-            - ./wirecloud-data:/opt/wirecloud_instance/data
-            - ./wirecloud-static:/var/www/static
+            - wirecloud-data:/opt/wirecloud_instance/data
+            - wirecloud-static:/var/www/static
+
+volumes:
+    wirecloud-data:
+    wirecloud-static:
