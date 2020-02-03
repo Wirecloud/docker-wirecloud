@@ -227,6 +227,10 @@ else:
         'haystack',
     )
 
+# HTTPS verification
+verify = os.environ.get("HTTPS_VERIFY", "/etc/ssl/certs/ca-certificates.crt").strip()
+WIRECLOUD_HTTPS_VERIFY = True if verify.lower() == "true" else False if verify.lower() == "false" else verify
+
 # Login/logout URLs
 LOGIN_URL = reverse_lazy('login')
 LOGOUT_URL = reverse_lazy('wirecloud.root')

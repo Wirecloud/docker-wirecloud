@@ -67,6 +67,8 @@ The following environment variables are also honored for configuring your WireCl
 - `-e KEYCLOAK_GLOBAL_ROLE=...` (default to "False")
 - `-e SOCIAL_AUTH_KEYCLOAK_KEY=...` (defaults to nothing)
 - `-e SOCIAL_AUTH_KEYCLOAK_SECRET=...` (defaults to nothing)
+- `-e HTTPS_VERIFY=...` (True, False or path to a certificate bundle, default to
+   "/etc/ssl/certs/ca-certificates.crt"
 
 In addition to those environment variables, this docker image also allows you to
 configure the following Django settings using environment variables with the

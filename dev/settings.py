@@ -202,6 +202,10 @@ for setting in BOOLEAN_SETTINGS:
         locals()[setting] = value.lower() == "true"
 
 
+# HTTPS verification
+verify = os.environ.get("HTTPS_VERIFY", "/etc/ssl/certs/ca-certificates.crt").strip()
+WIRECLOUD_HTTPS_VERIFY = True if verify.lower() == "true" else False if verify.lower() == "false" else verify
+
 # FIWARE & Keycloak configuration
 IDM_AUTH = 'fiware' if "FIWARE_IDM_SERVER" in locals() and "SOCIAL_AUTH_FIWARE_KEY" in locals() and "SOCIAL_AUTH_FIWARE_SECRET" in locals() else None
 IDM_AUTH = 'keycloak' if "KEYCLOAK_SERVER" in locals() and "KEYCLOAK_REALM" in locals() and "KEYCLOAK_KEY" in locals() and "SOCIAL_AUTH_KEYCLOAK_KEY" in locals() and "SOCIAL_AUTH_KEYCLOAK_SECRET" in locals() else IDM_AUTH
