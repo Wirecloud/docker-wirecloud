@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import os
+
 from django.conf import settings
 from django.conf.urls import include, url
 from django.contrib import admin
@@ -34,7 +36,7 @@ urlpatterns = (
     url(r'^admin/logout/?$', wc_auth.logout),
 
     # Admin interface
-    url(r'^admin/', include(admin.site.urls)),
+    url(os.environ.get("ADMIN_URL_PATH", r'^admin/'), include(admin.site.urls)),
 )
 
 if settings.IDM_AUTH is not None:
