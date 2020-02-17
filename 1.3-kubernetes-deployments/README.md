@@ -5,7 +5,7 @@
 [![tigalab's logo](https://raw.githubusercontent.com/tigalab/kubernetes-deployments-docker-wirecloud/tigalab/1.3-kubernetes-deployments/tiga-ico.JPG)](https://www.tiga.com.tr/)
 
 
-#FIWARE WIRECLOUD DEPLOYMENT ON KUBERNETES
+# FIWARE WIRECLOUD DEPLOYMENT ON the KUBERNETES
 
 [![tigalab's logo](https://raw.githubusercontent.com/tigalab/kubernetes-deployments-docker-wirecloud/tigalab/1.3-kubernetes-deployments/fiqare-product.png)](https://www.tiga.com.tr/)
 
