@@ -1,6 +1,6 @@
 
 
-[![WireCloud's logo](https://raw.githubusercontent.com/Wirecloud/docker-wirecloud/tigalab/1.3-kubernetes-deployments/tiga-ico.png)](https://github.com/Wirecloud/wirecloud)
+[![WireCloud's logo](https://raw.githubusercontent.com/tigalab/kubernetes-deployments-docker-wirecloud/tigalab/1.3-kubernetes-deployments/tiga-ico.JPG)](https://github.com/Wirecloud/wirecloud)
 
 
 
