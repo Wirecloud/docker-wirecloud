@@ -10,17 +10,23 @@ This folder consists:
 
 How to install:
 ***Make sure you have  an installed kubernetes cluster node and kubectl tool to manage kubernetes deployments***
--first of all create persistent volume that service uses.
+
+
+
+- Create persistent volume that service uses.
 edit volume file's #change this part
  create volume with the following command
-'kubectl apply -f wirecloud-data-volume.yaml'
+'kubectl apply -f wirecloud-static-volume.yaml'
+
 
 -create persistent volume with the following command
-'kubectl apply -f wirecloud-data-persistentvolumeclaim.yaml'
+'kubectl apply -f wirecloud-static-persistentvolumeclaim.yaml'
+
 
 -Edit the deployment file's #change this part
  create deployment with the following command:
-'kubectl apply -f wirecloud-data-volume.yaml'
+'kubectl apply -f wirecloud-deployment.yaml'
+
 
 -edit service file's #change this part
  create service with the following command:
