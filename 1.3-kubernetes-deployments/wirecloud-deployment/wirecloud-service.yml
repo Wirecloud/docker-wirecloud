@@ -9,6 +9,7 @@ spec:
   ports:
    - port: 8000
      targetPort: 8000
+     #change this according to you
      nodePort: 30230
   selector:
    app: wirecloud

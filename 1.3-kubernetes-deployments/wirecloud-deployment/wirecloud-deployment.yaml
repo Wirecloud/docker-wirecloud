@@ -14,10 +14,13 @@ spec:
       containers:
       - env:
         - name: DB_HOST
+        #change this according to you
           value: "192.168.1.123"
         - name: "DB_PASSWORD"
+        #change this according to you
           value: wirepass
         - name: DB_PORT
+        #change this according to you
           value: "30220"
         - name: DEBUG
           value: "True"

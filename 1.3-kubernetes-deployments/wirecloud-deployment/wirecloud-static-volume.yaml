@@ -11,4 +11,5 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
-    path: "/mnt/wirecloud/wircloud_static/"
+  #change this according to you
+    path: "/mnt/wirecloud/wirecloud_static/"

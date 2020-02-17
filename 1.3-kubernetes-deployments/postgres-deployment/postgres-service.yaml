@@ -9,6 +9,7 @@ spec:
   ports:
    - port: 5432
      targetPort: 5432
+     #change this according to you
      nodePort: 30220
   selector:
    app: postgres
