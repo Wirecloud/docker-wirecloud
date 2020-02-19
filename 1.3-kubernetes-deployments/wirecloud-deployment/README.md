@@ -8,7 +8,7 @@ This folder consists:
 -persistent volume file
 -persisten volume claim
 
-How to install:
+How to build the deployments:
 ***Make sure you have  an installed kubernetes cluster node and kubectl tool to manage kubernetes deployments***
 
 

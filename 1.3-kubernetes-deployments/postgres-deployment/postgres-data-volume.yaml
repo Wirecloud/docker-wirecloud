@@ -11,4 +11,5 @@ spec:
   accessModes:
     - ReadWriteOnce
   hostPath:
+  #change this
     path: "/mnt/wirecloud/postgres/"

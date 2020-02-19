@@ -1,4 +1,4 @@
-[![tigalab's logo](https://raw.githubusercontent.com/tigalab/kubernetes-deployments-docker-wirecloud/tigalab/1.3-kubernetes-deployments/tiga-ico.JPG)](https://www.tiga.com.tr/)
+
 
 
 
@@ -9,7 +9,7 @@ This folder consists:
 -persistent volume file
 -persisten volume claim
 
-How to install:
+How to build the deployments:
 ***Make sure you have  an installed kubernetes cluster node and kubectl tool to manage kubernetes deployments***
 
 
