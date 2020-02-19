@@ -32,8 +32,7 @@ kubectl apply -f wirecloud-deployment.yaml
 ```
 
 edit service file's #change this part
-- create service with the following command:
-
+- create services with the following command:
 ```
 kubectl apply -f wirecloud-service.yaml
 ```
