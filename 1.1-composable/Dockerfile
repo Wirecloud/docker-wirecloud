@@ -13,7 +13,7 @@ RUN apt update && \
 RUN pip install "wirecloud<1.2"
 
 RUN adduser --system --group --shell /bin/bash wirecloud && \
-    pip install --no-cache-dir channels asgi_ipc asgi_redis asgi_rabbitmq && \
+    pip install --no-cache-dir channels asgi_ipc asgi_redis && \
     wirecloud-admin startproject wirecloud_instance && \
     chown -R wirecloud:wirecloud wirecloud_instance && \
     chmod a+x wirecloud_instance/manage.py
