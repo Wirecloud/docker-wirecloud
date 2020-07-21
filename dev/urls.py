@@ -41,6 +41,8 @@ urlpatterns = (
 
 if settings.IDM_AUTH:
     urlpatterns += (url('', include('social_django.urls', namespace='social')),)
+    if settings.IDM_AUTH == "keycloak":
+        urlpatterns += (url('', include('wirecloud.keycloak.urls')),)
 
 urlpatterns += wirecloud.platform.urls.urlpatterns
 urlpatterns += tuple(staticfiles_urlpatterns())
