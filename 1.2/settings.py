@@ -200,6 +200,8 @@ else:
         'django.contrib.auth.backends.ModelBackend',
     )
 
+SOCIAL_AUTH_NO_DEFAULT_PROTECTED_USER_FIELDS = True
+SOCIAL_AUTH_PROTECTED_USER_FIELDS = ('username', 'id', 'pk', 'email', 'password', 'is_active')
 DATA_UPLOAD_MAX_MEMORY_SIZE = 262144000
 
 LOGGING = {
