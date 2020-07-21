@@ -10,7 +10,7 @@ RUN apt update && \
     rm -rf /var/lib/apt/lists/* && \
     gosu nobody true
 
-RUN pip install "wirecloud<1.2"
+RUN pip install "wirecloud<1.2" django-appconf==1.0.3
 
 RUN adduser --system --group --shell /bin/bash wirecloud && \
     pip install --no-cache-dir channels asgi_ipc asgi_redis && \
