@@ -22,7 +22,9 @@ before_script:
 
 script:
     - set -e
-    - docker build -t fiware/wirecloud:${VERSION} .
+    - echo '{"experimental":true}' | sudo tee /etc/docker/daemon.json
+    - sudo service docker restart
+    - docker build --squash -t fiware/wirecloud:${VERSION} .
     - test "${VERSION}" = "latest" && sed -ri "s|fiware/wirecloud:1.3|fiware/wirecloud:latest|g" docker-compose*.yml || true
     # We need to run this using sudo to be able to remove some files created by
     # docker
