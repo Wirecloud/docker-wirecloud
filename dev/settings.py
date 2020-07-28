@@ -284,7 +284,7 @@ if IDM_AUTH == 'fiware':
     )
 elif IDM_AUTH == 'keycloak':
     AUTHENTICATION_BACKENDS = (
-        'wirecloud.keycloak.social_auth_backend.KeycloakOAuth2',
+        'wirecloud.keycloak.social_auth_backend.KeycloakOpenIdConnect',
     )
 else:
     AUTHENTICATION_BACKENDS = (
