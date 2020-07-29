@@ -37,8 +37,8 @@ VOLUME /opt/wirecloud_instance/data
 
 EXPOSE 8000
 
-HEALTHCHECK --interval=3s \
-    --start-period=40s \
+HEALTHCHECK --interval=5s \
+    --start-period=120s \
 	CMD curl --fail http://localhost:8000/api/features || exit 1
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
