@@ -162,7 +162,7 @@ services:
         restart: always
         image: postgres
         environment:
-            - POSTGRES_PASSWORD=wirepass   # Change this password!
+            - POSTGRES_PASSWORD=wirepass   
         volumes:
             - ./postgres-data:/var/lib/postgresql/data
 
