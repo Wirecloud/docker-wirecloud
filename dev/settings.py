@@ -193,20 +193,23 @@ BOOLEAN_SETTINGS = (
     "EMAIL_USE_SSL",
     "SESSION_COOKIE_HTTPONLY",
     "SESSION_COOKIE_SECURE",
-    "SOCIAL_AUTH_FIWARE_VERIFY_SSL",
-    "SOCIAL_AUTH_VERIFY_SSL",
     "SOCIAL_AUTH_KEYCLOAK_OIDC_GLOBAL_ROLE",
-    "SOCIAL_AUTH_KEYCLOAK_OIDC_VERIFY_SSL",
 )
 for setting in BOOLEAN_SETTINGS:
     value = os.environ.get(setting, "").strip()
     if value != "":
         locals()[setting] = value.lower() == "true"
 
-
-# HTTPS verification
-verify = os.environ.get("HTTPS_VERIFY", "/etc/ssl/certs/ca-certificates.crt").strip()
-WIRECLOUD_HTTPS_VERIFY = True if verify.lower() == "true" else False if verify.lower() == "false" else verify
+## Verify SSL settings
+VERIFY_SETTINGS = (
+    "WIRECLOUD_HTTPS_VERIFY",
+    "SOCIAL_AUTH_FIWARE_VERIFY_SSL",
+    "SOCIAL_AUTH_VERIFY_SSL",
+    "SOCIAL_AUTH_KEYCLOAK_OIDC_VERIFY_SSL",
+)
+for setting in VERIFY_SETTINGS:
+    value = os.environ.get(setting, "/etc/ssl/certs/ca-certificates.crt").strip()
+    locals()[setting] = True if value.lower() == "true" else False if value.lower() == "false" else value
 
 # FIWARE & Keycloak configuration
 IDM_AUTH = 'fiware' if "FIWARE_IDM_SERVER" in locals() and "SOCIAL_AUTH_FIWARE_KEY" in locals() and "SOCIAL_AUTH_FIWARE_SECRET" in locals() else None
