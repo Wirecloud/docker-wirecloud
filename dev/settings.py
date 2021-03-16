@@ -18,6 +18,9 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
+# Default settings
+DB_USERNAME = "postgres"
+DB_PASSWORD = "postgres"
 
 if "ELASTICSEARCH2_URL" in os.environ:
     HAYSTACK_CONNECTIONS = {
