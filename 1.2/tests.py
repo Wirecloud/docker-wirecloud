@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # Copyright (c) 2018-2020 Future Internet Consulting and Development Solutions S.L.
@@ -77,19 +77,19 @@ class StandaloneTests(unittest.TestCase, WireCloudTests):
         print("\n################################################################################\n")
         print("#")
         print("# Initializing standalone test case")
-        print("#\n")
+        print("#\n", flush=True)
         sh.docker_compose("-f", "docker-compose-standalone.yml", "up", d=True, remove_orphans=True, _fg=True)
         wait_until_running()
-        print()
+        print(flush=True)
 
     @classmethod
     def tearDownClass(cls):
         print()
         print("#")
         print("# Removing containers and volumes")
-        print("#\n")
+        print("#\n", flush=True)
         sh.docker_compose.down(remove_orphans=True, v=True, _fg=True)
-        print()
+        print(flush=True)
 
 
 class SimpleTests(unittest.TestCase, WireCloudTests):
@@ -99,19 +99,19 @@ class SimpleTests(unittest.TestCase, WireCloudTests):
         print("\n################################################################################\n")
         print("#")
         print("# Initializing simple test case")
-        print("#\n")
+        print("#\n", flush=True)
         sh.docker_compose("-f", "docker-compose-simple.yml", "up", d=True, remove_orphans=True, _fg=True)
         wait_until_running()
-        print()
+        print(flush=True)
 
     @classmethod
     def tearDownClass(cls):
         print()
         print("#")
         print("# Removing containers and volumes")
-        print("#\n")
+        print("#\n", flush=True)
         sh.docker_compose.down(remove_orphans=True, v=True, _fg=True)
-        print()
+        print(flush=True)
 
 
 class ComposedTests(unittest.TestCase, WireCloudTests):
@@ -121,19 +121,19 @@ class ComposedTests(unittest.TestCase, WireCloudTests):
         print("\n################################################################################\n")
         print("#")
         print("# Initializing composed test case")
-        print("#\n")
+        print("#\n", flush=True)
         sh.docker_compose.up(d=True, remove_orphans=True, _fg=True)
         wait_until_running()
-        print()
+        print(flush=True)
 
     @classmethod
     def tearDownClass(cls):
         print()
         print("#")
         print("# Removing containers and volumes")
-        print("#\n")
+        print("#\n", flush=True)
         sh.docker_compose.down(remove_orphans=True, v=True, _fg=True)
-        print()
+        print(flush=True)
 
 
 class ReadOnlyConfigTests(unittest.TestCase, WireCloudTests):
@@ -143,20 +143,20 @@ class ReadOnlyConfigTests(unittest.TestCase, WireCloudTests):
         print("\n################################################################################\n")
         print("#")
         print("# Initializing read-only config test case")
-        print("#\n")
+        print("#\n", flush=True)
 
         sh.docker_compose("-f", "docker-compose-config-file.yml", "up", d=True, remove_orphans=True, _fg=True)
         wait_until_running()
-        print()
+        print(flush=True)
 
     @classmethod
     def tearDownClass(cls):
         print()
         print("#")
         print("# Removing containers and volumes")
-        print("#\n")
+        print("#\n", flush=True)
         sh.docker_compose.down(remove_orphans=True, v=True, _fg=True)
-        print()
+        print(flush=True)
 
 
 class IDMTests(unittest.TestCase, WireCloudTests):
@@ -166,7 +166,7 @@ class IDMTests(unittest.TestCase, WireCloudTests):
         print("\n################################################################################\n")
         print("#")
         print("# Initializing idm test case")
-        print("#\n")
+        print("#\n", flush=True)
 
         env = {}
         env.update(os.environ)
@@ -175,16 +175,16 @@ class IDMTests(unittest.TestCase, WireCloudTests):
         env["SOCIAL_AUTH_FIWARE_SECRET"] = "notused"
         sh.docker_compose("-f", "docker-compose-idm.yml", "up", d=True, remove_orphans=True, _env=env, _fg=True)
         wait_until_running()
-        print()
+        print(flush=True)
 
     @classmethod
     def tearDownClass(cls):
         print()
         print("#")
         print("# Removing containers and volumes")
-        print("#\n")
+        print("#\n", flush=True)
         sh.docker_compose.down(remove_orphans=True, v=True, _fg=True)
-        print()
+        print(flush=True)
 
     def test_login_should_redirect_to_idm(self):
         response = requests.get("http://localhost/login/fiware/", allow_redirects=False)
@@ -205,7 +205,7 @@ class CustomUserTests(unittest.TestCase, WireCloudTests):
         print("\n################################################################################\n")
         print("#")
         print("# Initializing custom user test case")
-        print("#\n")
+        print("#\n", flush=True)
 
         sh.adduser("mycustomuser", system=True, group=True, shell="/bin/bash")
         uid = pwd.getpwnam("mycustomuser").pw_uid
@@ -220,18 +220,18 @@ class CustomUserTests(unittest.TestCase, WireCloudTests):
         env["WIRECLOUD_USER"] = "{}".format(uid)
         sh.docker_compose("-f", "docker-compose-custom-user.yml", "up", d=True, remove_orphans=True, _env=env, _fg=True)
         wait_until_running()
-        print()
+        print(flush=True)
 
     @classmethod
     def tearDownClass(cls):
         print()
         print("#")
         print("# Removing containers and volumes")
-        print("#\n")
+        print("#\n", flush=True)
         sh.docker_compose.down(remove_orphans=True, v=True, _fg=True)
         shutil.rmtree('wirecloud-data')
         shutil.rmtree('wirecloud-static')
-        print()
+        print(flush=True)
 
 
 if __name__ == "__main__":
