@@ -1,0 +1,53 @@
+name: CI/CD
+
+on:
+
+  push:
+    branches:
+      - master
+
+  pull_request:
+    branches:
+      - master
+
+  schedule:
+    - cron: '24 3 * * *'
+
+jobs:
+
+  integration-tests-and-push:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        wirecloud-version:
+          - "1.2"
+          - "1.3"
+          - "dev"
+          - "latest"
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup environment
+        run: |
+          cat /etc/docker/daemon.json
+          echo '{"cgroup-parent": "/actions_job", "experimental": true}' | sudo tee /etc/docker/daemon.json
+          sudo systemctl restart docker.service
+          sudo pip3 install sh requests docker-compose
+      - name: Build & run tests
+        working-directory: ./${{ matrix.wirecloud-version }}
+        env:
+          VERSION: ${{ matrix.wirecloud-version }}
+        run: |
+          docker build --squash -t fiware/wirecloud:${VERSION} .
+          test "${VERSION}" = "latest" && sed -ri "s|fiware/wirecloud:1.3|fiware/wirecloud:latest|g" docker-compose*.yml || true
+          sudo python3 tests.py
+      - name: Push to docker
+        env:
+          DOCKER_USER: ${{ secrets.DOCKER_USER }}
+          DOCKER_PASS: ${{ secrets.DOCKER_PASS }}
+          VERSION: ${{ secrets.wirecloud-version }}
+        run: |
+          docker login -u "${DOCKER_USER}" -p "${DOCKER_PASS}"
+          docker push fiware/wirecloud:${VERSION}
