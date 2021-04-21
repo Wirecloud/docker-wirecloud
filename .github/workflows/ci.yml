@@ -24,7 +24,6 @@ jobs:
         wirecloud-version:
           - "1.2"
           - "1.3"
-          - "1.4"
           - "dev"
           - "latest"
 
@@ -42,7 +41,7 @@ jobs:
           VERSION: ${{ matrix.wirecloud-version }}
         run: |
           docker build --squash -t fiware/wirecloud:${VERSION} .
-          test "${VERSION}" = "latest" && sed -ri "s|fiware/wirecloud:1.4|fiware/wirecloud:latest|g" docker-compose*.yml || true
+          test "${VERSION}" = "latest" && sed -ri "s|fiware/wirecloud:1.3|fiware/wirecloud:latest|g" docker-compose*.yml || true
           sudo python3 tests.py
       - name: Push to docker
         env:

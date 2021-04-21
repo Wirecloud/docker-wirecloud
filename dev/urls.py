@@ -16,14 +16,11 @@ import wirecloud.platform.urls
 admin.autodiscover()
 
 login_method = django_auth.LoginView.as_view()
-logout_method = wc_auth.logout
-
 if settings.IDM_AUTH == 'fiware':
     login_method = wc_fiware.login
 
 if settings.IDM_AUTH == 'keycloak':
     login_method = wc_keycloak.login
-    logout_method = wc_keycloak.logout
 
 urlpatterns = (
 
@@ -35,7 +32,7 @@ urlpatterns = (
 
     # Login/logout
     url(r'^login/?$', login_method, name="login"),
-    url(r'^logout/?$', logout_method, name="logout"),
+    url(r'^logout/?$', wc_auth.logout, name="logout"),
     url(r'^admin/logout/?$', wc_auth.logout),
 
     # Admin interface
