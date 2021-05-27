@@ -1,7 +1,8 @@
 # Supported tags and respective `Dockerfile` links #
 
+- [`1.4`, `1.4.0`, `FIWARE_8.0`, `latest`](https://github.com/Wirecloud/docker-wirecloud/blob/master/1.4/Dockerfile)
 - [`1.3`, `1.3.1`, `FIWARE_7.7.1`](https://github.com/Wirecloud/docker-wirecloud/blob/master/1.3/Dockerfile)
-- [`1.2`, `latest`](https://github.com/Wirecloud/docker-wirecloud/blob/master/1.2/Dockerfile)
+- [`1.2`](https://github.com/Wirecloud/docker-wirecloud/blob/master/1.2/Dockerfile)
 - [`dev`](https://github.com/Wirecloud/docker-wirecloud/blob/master/dev/Dockerfile)
 
 
