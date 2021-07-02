@@ -45,7 +45,7 @@ COPY ./manage.py /usr/local/bin/
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends libmemcached-dev libpcre3-dev gosu gcc ca-certificates curl && \
-    pip install --no-cache-dir social-auth-app-django "gunicorn==19.3.0" psycopg2-binary pylibmc pysolr "elasticsearch==2.4.1" && \
+    pip install --no-cache-dir social-auth-app-django "gunicorn==19.3.0" "psycopg2-binary<2.9" pylibmc pysolr "elasticsearch==2.4.1" && \
     pip install --no-cache-dir /dist/*.whl && \
     rm -rf /dist && \
     adduser --system --group --shell /bin/bash wirecloud && \
