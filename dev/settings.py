@@ -342,10 +342,17 @@ LOGGING = {
             '()': 'wirecloud.commons.utils.log.SkipUnreadablePosts',
         }
     },
+    'formatters': {
+        'console_output': {
+            'format': '[%(asctime)s] [%(threadName)s] [%(levelname)s] %(message)s',
+            'class': 'logging.Formatter'
+        },
+    },
     'handlers': {
         'console': {
             'level': 'INFO',
             'class': 'logging.StreamHandler',
+            'formatter': 'console_output',
         },
         'mail_admins': {
             'level': 'ERROR',
