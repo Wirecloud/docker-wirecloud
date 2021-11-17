@@ -36,7 +36,8 @@ ENV GITHUB_ACCOUNT=${GITHUB_ACCOUNT} \
     DEFAULT_THEME=wirecloud.defaulttheme \
     FORWARDED_ALLOW_IPS=* \
     DB_PORT=5432 \
-    LOGLEVEL=info
+    LOGLEVEL=info \
+    LOGFORMAT=plain
 
 # Install WireCloud & dependencies
 COPY --from=builder ${GITHUB_REPOSITORY}/src/dist /dist
@@ -60,6 +61,7 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 COPY ./settings.py ./urls.py /opt/wirecloud_instance/wirecloud_instance/
+COPY ./glogger.py /usr/local/lib/python3.6/site-packages/wirecloud/
 
 WORKDIR /opt/wirecloud_instance
 

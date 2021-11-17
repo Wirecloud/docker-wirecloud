@@ -331,43 +331,4 @@ if os.environ.get("SOCIAL_AUTH_FIWARE_SYNC_ROLE_GROUPS", "False").strip().lower(
 
 DATA_UPLOAD_MAX_MEMORY_SIZE = 262144000
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'filters': {
-        'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse'
-        },
-        'skip_unreadable_posts': {
-            '()': 'wirecloud.commons.utils.log.SkipUnreadablePosts',
-        }
-    },
-    'formatters': {
-        'console_output': {
-            'format': '[%(asctime)s] [%(threadName)s] [%(levelname)s] %(message)s',
-            'class': 'logging.Formatter'
-        },
-    },
-    'handlers': {
-        'console': {
-            'level': 'INFO',
-            'class': 'logging.StreamHandler',
-            'formatter': 'console_output',
-        },
-        'mail_admins': {
-            'level': 'ERROR',
-            'filters': ['require_debug_false', 'skip_unreadable_posts'],
-            'class': 'django.utils.log.AdminEmailHandler'
-        }
-    },
-    'loggers': {
-        '': {
-            'handlers': ['console'],
-        },
-        'django.request': {
-            'handlers': ['console', 'mail_admins'],
-            'level': 'ERROR',
-            'propagate': False,
-        },
-    }
-}
+from wirecloud.glogger import config as LOGGING

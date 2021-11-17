@@ -32,14 +32,14 @@ case "$1" in
                 --workers 2 \
                 --bind 0.0.0.0:8000 \
                 --log-file - \
-                --log-level ${LOGLEVEL}
+                --logger-class wirecloud.glogger.GunicornLogger
         else
             exec /usr/local/bin/gunicorn wirecloud_instance.wsgi:application \
                 --forwarded-allow-ips "${FORWARDED_ALLOW_IPS}" \
                 --workers 2 \
                 --bind 0.0.0.0:8000 \
                 --log-file - \
-                --log-level ${LOGLEVEL}
+                --logger-class wirecloud.glogger.GunicornLogger
         fi
         ;;
 esac
