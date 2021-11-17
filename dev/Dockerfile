@@ -37,7 +37,9 @@ ENV GITHUB_ACCOUNT=${GITHUB_ACCOUNT} \
     FORWARDED_ALLOW_IPS=* \
     DB_PORT=5432 \
     LOGLEVEL=info \
-    LOGFORMAT=plain
+    LOGFORMAT=plain \
+    WORKERS=2 \
+    THREADS=8
 
 # Install WireCloud & dependencies
 COPY --from=builder ${GITHUB_REPOSITORY}/src/dist /dist

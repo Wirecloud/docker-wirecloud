@@ -29,14 +29,16 @@ case "$1" in
         if [ "$(id -u)" = '0' ]; then
             exec gosu wirecloud /usr/local/bin/gunicorn wirecloud_instance.wsgi:application \
                 --forwarded-allow-ips "${FORWARDED_ALLOW_IPS}" \
-                --workers 2 \
+                --workers ${WORKERS} \
+                --threads ${THREADS} \
                 --bind 0.0.0.0:8000 \
                 --log-file - \
                 --logger-class wirecloud.glogger.GunicornLogger
         else
             exec /usr/local/bin/gunicorn wirecloud_instance.wsgi:application \
                 --forwarded-allow-ips "${FORWARDED_ALLOW_IPS}" \
-                --workers 2 \
+                --workers ${WORKERS} \
+                --threads ${THREADS} \
                 --bind 0.0.0.0:8000 \
                 --log-file - \
                 --logger-class wirecloud.glogger.GunicornLogger
