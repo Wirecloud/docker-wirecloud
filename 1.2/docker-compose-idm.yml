@@ -16,7 +16,7 @@ services:
 
     postgres:
         restart: always
-        image: postgres:latest
+        image: postgres:13
         environment:
             - POSTGRES_PASSWORD=wirepass   # Change this password!
         volumes:
