@@ -49,7 +49,7 @@ RUN apt-get update && \
     pip install --no-cache-dir /dist/*.whl && \
     rm -rf /dist && \
     adduser --system --group --shell /bin/bash wirecloud && \
-    pip install --no-cache-dir "channels<2.3" "channels-redis" "channels-rabbitmq" "wirecloud-keycloak>=0.3.0" && \
+    pip install --no-cache-dir "channels<2.3" "channels-redis" "wirecloud-keycloak>=0.3.0" && \
     mkdir -p /opt/wirecloud_instance /var/www/static && \
     cd /opt && \
     wirecloud-admin startproject wirecloud_instance wirecloud_instance && \
