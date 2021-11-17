@@ -20,7 +20,7 @@ case "$1" in
     createsuperuser)
         manage.py createsuperuser
         ;;
-    *)
+    gunicorn)
         manage.py collectstatic --noinput
         manage.py migrate --fake-initial
         manage.py populate
@@ -41,5 +41,8 @@ case "$1" in
                 --log-file - \
                 --logger-class wirecloud.glogger.GunicornLogger
         fi
+        ;;
+    *)
+        exec $1
         ;;
 esac

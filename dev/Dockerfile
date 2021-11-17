@@ -75,3 +75,4 @@ HEALTHCHECK --interval=5s \
 	CMD curl --fail http://localhost:8000/api/features || exit 1
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
+CMD ["gunicorn"]
