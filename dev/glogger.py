@@ -24,7 +24,7 @@ config = {
     },
     "formatters": {
         "console_output": {
-            "format": "[%(asctime)s] [%(threadName)s] [%(levelname)s] %(message)s",
+            "format": "%(message)s" if LOG_FORMAT == "JSON" else "[%(asctime)s] [%(threadName)s] [%(levelname)s] %(message)s",
             "class": "wirecloud.glogger.JSONFormatter" if LOG_FORMAT == "JSON" else "wirecloud.glogger.NewLineFormatter",
         },
     },
@@ -70,7 +70,7 @@ class JSONFormatter(logging.Formatter):
             "time": self.formatTime(record),
             "threadName": record.threadName,
             "levelname": record.levelname,
-            "log": record.msg
+            "log": super().format(record)
         })
 
 
